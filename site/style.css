@@ -1,0 +1,2869 @@
+/* ============================================================
+   xRegistry SPA — Global Styles
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: sans-serif;
+  font-size: 14px;
+  background: #f5f5f5;
+  color: #222;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ---- Header ---- */
+
+#header {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 4px 10px;
+  background: #fff;
+  border-bottom: 2px solid #ddd;
+  flex-shrink: 0;
+  min-height: 42px;
+}
+
+#header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+#xreg-logo {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+#logo-link { display: inline-flex; align-items: center; text-decoration: none; border-radius: 4px; padding: 2px; }
+#logo-link:hover { background: rgba(0,0,0,0.08); }
+
+
+
+/* Breadcrumbs */
+#breadcrumbs {
+  display: flex;
+  align-items: flex-end;
+  min-height: 24px;
+  font-size: 13px;
+  min-width: 0;
+}
+
+/* Small "Server: <url>" info line shown directly below the page title
+   (e.g. "REGISTRY: CloudEvents") on every content page — always shows the
+   real server URL, never a proxy's encoded /xrproxy/ URL. See plan.md
+   "Server URL sub-title line". */
+.eg-server-url-line {
+  font-size: 12px;
+  color: #888;
+  margin: -8px 0 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Editor pages (Model/ModelSource/Capabilities) have no page title — the
+   line is placed just below the header's breadcrumb bar instead (as the
+   first child of the editor container, before the sub-breadcrumb bar),
+   so the negative top margin (meant to pull it up under a title) must
+   be reset here. */
+#modelEditor > .eg-server-url-line,
+#capEditor > .eg-server-url-line,
+#xregEditor > .eg-server-url-line {
+  margin: 0;
+  padding: 4px 10px 6px;
+  border-bottom: 1px solid #ddd;
+}
+
+#header-spacer { flex: 1; }
+.bc-space { display: inline-block; width: 8px; flex-shrink: 0; }
+.bc-sep { color: #999; user-select: none; }
+.bc-link { color: #2060a0; cursor: pointer; text-decoration: underline; white-space: nowrap; font-weight: bold; }
+.bc-link:hover { color: #003d80; }
+.bc-current { color: #333; font-weight: bold; white-space: nowrap; }
+
+/* Collapsed breadcrumb ellipsis button */
+.bc-ellipsis {
+  background: none;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  padding: 1px 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #2060a0;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+}
+.bc-ellipsis:hover { background: #eef; border-color: #99b; }
+.bc-ellipsis-arrow { font-size: 8px; color: #888; }
+
+/* Level-2 collapsed: single label button */
+.bc-full-menu {
+  background: none;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  padding: 2px 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  color: #333;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bc-full-menu:hover { background: #eef; border-color: #99b; }
+
+/* Shared header popup */
+#header-popup {
+  display: none;
+  position: fixed;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  padding: 4px 0;
+  min-width: 160px;
+  z-index: 300;
+  text-align: left;
+}
+#header-popup.popup-open { display: block; }
+.popup-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  font-size: 13px;
+  white-space: nowrap;
+  text-decoration: none;
+  color: #222;
+  cursor: pointer;
+}
+a.popup-item:hover { background: #f0f4ff; color: #2060a0; }
+.popup-item-active { font-weight: bold; color: #2060a0; }
+.popup-item-cur { color: #555; cursor: default; }
+.popup-sep { margin: 4px 0; border: none; border-top: 1px solid #eee; }
+
+/* Small icons shown to the left of each menu item's label — roughly half
+   the size of the equivalent toolbar button's icon, reusing the same
+   assets/CSS techniques (clip-path, currentColor glyphs) so they inherit
+   the existing hover/active blue tint automatically. */
+.popup-item-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+.popup-icon-funnel {
+  display: inline-block;
+  width: 9px;
+  height: 8px;
+  background: currentColor;
+  clip-path: polygon(0 0, 100% 0, 58% 55%, 58% 100%, 42% 100%, 42% 55%);
+}
+.popup-icon-xreg { display: block; width: 10px; height: 12px; }
+.popup-icon-pencil {
+  display: inline-block;
+  font-size: 12px;
+  line-height: 1;
+  transform: scaleX(-1);
+}
+.popup-icon-gear { font-size: 19.5px; line-height: 1; }
+.popup-icon-grid {
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5px;
+  width: 9px;
+  height: 9px;
+}
+.popup-icon-grid span {
+  display: block;
+  background: currentColor;
+  border-radius: 1px;
+}
+.popup-icon-table { display: block; width: 11px; height: 9px; }
+.popup-icon-json { font-size: 11px; font-family: monospace; font-weight: bold; }
+
+/* Header right: view toggle + edit button */
+#header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+#view-controls {
+  display: inline-flex;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  overflow: hidden;
+  height: 28px;
+  width: 40px; /* fixed so the button doesn't resize between grid/table/json icons */
+}
+#view-controls .view-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+  cursor: pointer;
+}
+.hv-table-icon { display: block; width: 22px; height: 19px; }
+.hv-json-sym  { font-size: 18px; font-family: monospace; font-weight: bold; align-self: center; }
+.hv-grid-icon {
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+  width: 17px;
+  height: 17px;
+}
+.hv-grid-icon span {
+  display: block;
+  background: currentColor;
+  border-radius: 1px;
+}
+.filter-funnel-icon {
+  display: inline-block;
+  width: 15px;
+  height: 14px;
+  background: currentColor;
+  clip-path: polygon(0 0, 100% 0, 58% 55%, 58% 100%, 42% 100%, 42% 55%);
+  vertical-align: middle;
+}
+#filters-toggle-btn { height: 28px; }
+.filters-toggle-sort-arrow {
+  margin-left: 2px;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 1;
+  vertical-align: middle;
+}
+.view-btn {
+  cursor: pointer;
+  padding: 2px 10px;
+  font-size: 13px;
+  font-weight: bold;
+  background: #e8e8e8;
+  color: #555;
+  user-select: none;
+  border-right: 1px solid #aaa;
+  transition: background 0.1s;
+}
+.view-btn:last-child { border-right: none; }
+.view-btn:hover { background: #d0d0d0; }
+.view-btn.active { background: #2060a0; color: white; }
+.view-btn.active:hover { background: #2060a0; }
+.view-btn.view-btn-disabled {
+  opacity: 0.35;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Breadcrumb home page pill (Registries / Group Types) */
+.bc-home-pill {
+  display: inline-flex;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  overflow: hidden;
+  height: 22px;
+  vertical-align: middle;
+}
+.bc-home-opt {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #555;
+  background: #e8e8e8;
+  cursor: pointer;
+  border-right: 1px solid #aaa;
+  user-select: none;
+  transition: background 0.1s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.bc-home-opt:last-child { border-right: none; }
+.bc-home-opt:hover { background: #d0d0d0; }
+.bc-home-opt.active { background: #2060a0; color: white; cursor: default; }
+
+.edit-btn {
+  cursor: pointer;
+  padding: 2px 9px;
+  font-size: 16px;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  background: #e8e8e8;
+  color: #555;
+  user-select: none;
+  display: inline-block;
+  transform: scaleX(-1);
+  transition: background 0.1s;
+}
+.edit-btn:hover { background: #d0d0d0; }
+.edit-btn.active { background: #2060a0; color: white; border-color: #2060a0; }
+
+.icon-btn {
+  cursor: pointer;
+  padding: 1px 8px;
+  font-size: 16px;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  background: #e8e8e8;
+  color: #555;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  transition: background 0.1s;
+  line-height: 22px;
+}
+.icon-btn:hover { background: #d0d0d0; }
+.icon-btn.active { background: #2060a0; color: white; border-color: #2060a0; }
+.icon-sym { font-size: 24px; line-height: 1; }
+#more-menu-btn { height: 28px; }
+.hv-hamburger-icon {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 20px;
+  height: 15px;
+}
+.hv-hamburger-icon span {
+  display: block;
+  height: 2.5px;
+  background: currentColor;
+  border-radius: 1px;
+}
+
+/* Copy-API-URL button, appended after the last breadcrumb segment */
+.bc-copy-btn { margin-left: 8px; padding: 4px 6px; flex-shrink: 0; }
+.bc-copy-btn svg { display: block; }
+.pencil-sym { font-size: 20px; align-self: center; }
+#editing-indicator { height: 28px; }
+.xregview-icon { display: block; }
+#xregview-indicator { height: 28px; }
+#home-refresh-btn { height: 28px; }
+.home-refresh-icon { display: block; width: 17px; height: 17px; }
+#home-refresh-btn.spinning .home-refresh-icon { animation: home-refresh-spin 0.6s linear; }
+@keyframes home-refresh-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* Add registry dialog */
+#add-reg-dialog, #server-err-dialog {
+  position: fixed;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  padding: 14px 16px;
+  z-index: 1000;
+  min-width: 260px;
+  max-width: 400px;
+}
+.add-reg-title {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #333;
+}
+#add-reg-url {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px 8px;
+  font-size: 13px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+.add-reg-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* ---- Content area ---- */
+
+#content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+#left-panel {
+  width: 220px;
+  min-width: 140px;
+  background: #fafafa;
+  overflow-y: auto;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#left-panel-resizer {
+  width: 5px;
+  flex-shrink: 0;
+  cursor: col-resize;
+  background: #ddd;
+  transition: background 0.15s;
+  user-select: none;
+}
+#left-panel-resizer:hover,
+#left-panel-resizer.dragging { background: #999; }
+
+#left-panel-inner {
+  padding: 8px 6px;
+  font-size: 13px;
+}
+
+#main-view {
+  flex: 1;
+  overflow: auto;
+  padding: 0;
+}
+
+/* ---- Tile view ---- (removed — see plan.md "Grid view removed for
+   collection pages"; List view (renderTableView) is now the only view for
+   the Groups/Resources/Versions collection pages) */
+
+
+
+/* ---- Table view ---- */
+
+#table-container {
+  padding: 12px 16px;
+}
+
+.xr-table {
+  border-collapse: collapse;
+  font-size: 13px;
+  background: white;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.xr-table th {
+  background: #e2e2e2;
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: bold;
+  color: #333;
+  border-bottom: 2px solid #ccc;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.xr-table th:hover { background: #d4d4d4; }
+.xr-table th.cell-version-hdr { white-space: normal; width: 1%; }
+
+.reg-endpoint-pills-title { font-size: 12px; font-weight: bold; color: #222; text-transform: uppercase; letter-spacing: 0.04em; }
+#table-container .eg-page-title { border-bottom: none; padding-bottom: 0; margin-bottom: 16px; }
+.reg-endpoint-pills { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 16px; }
+.reg-endpoint-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 12px; font-weight: bold; color: #2060a0;
+  background: #eef2fa; border: 1px solid #c8d6ec; border-radius: 12px;
+  padding: 4px 12px; text-decoration: none;
+}
+.reg-endpoint-pill:hover { background: #dce4f5; border-color: #a8c0e6; }
+.reg-endpoint-pill-edit { font-size: 11px; color: #666; display: inline-block; transform: scaleX(-1); }
+.xr-table th.sorted-asc::after { content: " ▲"; font-size: 10px; }
+.xr-table th.sorted-desc::after { content: " ▼"; font-size: 10px; }
+.xr-table td {
+  padding: 7px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: top;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.xr-table tr:last-child td { border-bottom: none; }
+.xr-table .cell-id { color: #2060a0; font-weight: bold; white-space: nowrap; }
+.xr-table .cell-id a { color: inherit; text-decoration: underline; }
+.xr-table .cell-id a:hover { color: #17497a; }
+/* List view's Property table: complex (object/array) values render a nested
+   renderValueTree() (.vt-obj/.vt-arr), so undo the default td's
+   nowrap/ellipsis/max-width truncation — that's only appropriate for plain
+   scalar text, not a multi-row nested grid. */
+.xr-table .cell-tree { white-space: normal; max-width: none; overflow: visible; text-overflow: clip; }
+/* Property tables' Value column (buildEntityPropsTableHtml()/renderMetaTable()
+   — Version Details/Metadata tabs on Resource + Version pages, and the plain
+   Properties table on Registry root/Group pages): plain scalar values (e.g.
+   long self/versionsurl URLs) previously inherited the generic .xr-table td
+   nowrap/ellipsis/max-width truncation, silently chopping long text instead
+   of letting it scroll into view. Undo that here so the cell (and therefore
+   the table) can grow as wide as its content needs — paired with
+   .eg-doc-tab-panel's overflow-x: auto below, which scopes the resulting
+   horizontal scrollbar to just the tab's content instead of the whole page.
+   (.cell-tree above already got this same treatment for object/array values;
+   this covers the far more common plain-scalar case.) */
+.xr-table-props td:last-child { white-space: nowrap; max-width: none; overflow: visible; text-overflow: clip; }
+/* Collection Table view's Created/Modified columns */
+.xr-table .cell-timestamp { color: #999; font-size: 12px; white-space: nowrap; }
+/* List view's Property tables (formatTimestampValue()) — same color/size as
+   any other property value; only the relative-time tooltip is special. */
+.xr-table .cell-timestamp-prop { white-space: nowrap; }
+
+/* List view's Property tables (buildEntityPropsTableHtml()/renderMetaTable())
+   — subtle zebra banding, applied via an explicit per-row class (not
+   nth-child) so the alternation can restart at each category-group
+   boundary rather than following raw row position across the whole
+   table. See plan.md "Property table categories". */
+.xr-table-props .xr-row-band td { background: #fafbfc; }
+/* Dirty/changed attribute — in Edit mode, marks a row whose value differs
+   from its pristine snapshot (_dataEditSrc), i.e. exactly what would be
+   sent in a PATCH. Amber accent so it's clearly distinct from zebra
+   banding (which can be present on the same row simultaneously) — matches
+   .xr-row-band's specificity (two classes + element) so the dirty
+   background reliably wins over the zebra background on banded rows too,
+   instead of only showing on unbanded ("every other") rows.
+*/
+.xr-row-dirty td:first-child { color: #92610a; border-left: 3px solid #e0a020; }
+.xr-table-props .xr-row-dirty td { background: #fff8ea; }
+/* Category divider row — a slim, unbanded label row splitting spec-defined
+   attributes into groups (Identity/Description/Versioning & State/Content/
+   Timestamps), with non-spec/custom attrs always in a final "Extensions"
+   group. Never shown when a table's keys collapse into a single group. */
+.xr-table-props .xr-props-cat td {
+  background: #f4f5f6;
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: bold;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-top: 1px solid #e2e2e2;
+}
+.xr-table-props .xr-props-cat:first-child td { border-top: none; }
+/* Domain view's plain divider row (see buildPropsCatRowHtml()) — used in
+   place of the text category header for the Extensions/"<Singular>
+   Metadata" bucket, since Domain view drops text headings for every
+   other category but still wants a visual break before that one. */
+.xr-table-props .xr-props-cat-divider td { padding: 6px 0; border: none; }
+.xr-props-divider { border: none; border-top: 1px solid #999; margin: 0; }
+/* Small inline hint text, e.g. next to a read-only defaultversionid link
+   in edit mode explaining how to unlock editing it (set Sticky true). */
+.xr-hint { color: #999; font-size: 12px; font-style: italic; margin-left: 6px; }
+/* Boolean Property-table values — compact pill, neutral palette (false
+   isn't a "bad" state for most spec booleans, so no red). */
+.eg-bool-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+.eg-bool-true { background: #e6f4ea; color: #1e7e34; }
+.eg-bool-false { background: #eee; color: #666; }
+/* Table view's Versions column (resource collections) — just the version
+   count as clickable text (no pill), navigating into that resource's
+   versions collection. */
+.cell-version-count { color: #2060a0; cursor: pointer; text-decoration: none; }
+.cell-version-count:hover { text-decoration: underline; }
+/* Generic centered-column helper (e.g. Table view's single-count "Versions"
+   column, centered under its header rather than left-aligned like most
+   columns). */
+.xr-table th.col-center, .xr-table td.col-center { text-align: center; }
+.xr-table .cell-desc {
+  color: #555;
+  max-width: 320px;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+.xr-table .cell-desc-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.xr-table .cell-children { white-space: nowrap; }
+
+/* ---- JSON view ---- */
+
+#json-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  height: 100%;
+}
+
+/* Sticky toolbar that stays at the top of #main-view while json content scrolls */
+.json-exp-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 2px 6px;
+  pointer-events: none;
+  /* Solid (matches #json-output's background) so the sticky header
+     doesn't let scrolled JSON content show/overlap through it. */
+  background: ghostwhite;
+  border-bottom: 1px solid #ddd;
+}
+.json-exp-server-url {
+  font-size: 11px;
+  font-family: monospace;
+  color: #888;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* "Expand all" reuses .eg-doc-tab directly (added alongside .json-exp-btn
+   in the markup) so it's pixel-identical to the Details/Document toggle
+   buttons — .json-exp-btn itself now only adds the JSON-view-header-
+   specific bits (pointer-events, since it sits inside the sticky header
+   whose default is pointer-events:none) and the disabled/inert state. */
+.json-exp-btn { pointer-events: auto; user-select: none; }
+.json-exp-btn-disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+.json-exp-btn-disabled:hover { background: #eef2fa; border-color: #c8d6ec; }
+
+/* Group wrapper for the header's right-side button cluster (Details/
+   Document toggle + "expand all") so .json-exp-wrap's space-between only
+   ever splits it into two groups (server URL on the left, buttons on the
+   right) regardless of how many buttons are present. */
+.json-exp-btn-group {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Details/Document toggle — JSON view's equivalent of List view's
+   Document/Version Details tabs, for any Resource/Version entity page
+   (shown even when the resource type has no document defined; Document
+   mode then just shows an explanatory empty state). Reuses List view's
+   own .eg-doc-tab/.eg-doc-tabs pill styling/color scheme (blue) verbatim
+   — see the .json-doc-toggle overrides placed alongside .eg-doc-tab below
+   for the compact sizing needed to fit this header (see plan.md "JSON
+   view Details/Document toggle"). */
+
+/* JSON edit view's header row reuses .json-exp-wrap's sticky positioning
+   as-is (transparent background, compact single-row padding, no wrap) so
+   it looks and behaves exactly like the read-only view's header rather
+   than growing/jumping into a separate boxed toolbar — the action bar's
+   buttons sit inline in the same row, using the smaller .editorBtnSmall
+   sizing to match the compact height of the read-only header's buttons. */
+.json-edit-header .editorActionBar {
+  pointer-events: auto;
+  margin: 0;
+  padding: 0;
+  border-bottom: none;
+  background: transparent;
+  flex-shrink: 0;
+}
+.json-edit-header .editorActionBar .editorBtn {
+  padding: 1px 8px;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* Outer gutter column present on every JSON line (first column, before any
+   indentation) — purely cosmetic left margin. */
+.jt-spc {
+  display: inline-block;
+  width: 1ch;
+  font-size: 13px;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+}
+/* Twisty toggle. Replaces the LAST native indent space on opener lines
+   (see addTwisties()) — its box MUST stay at the container's own
+   font-size (13px, matching #json-output) so its 1ch width equals
+   exactly one real indent-space character; otherwise opener lines end
+   up indented differently than their non-opener siblings at the same
+   JSON nesting depth. The larger, more-legible glyph and its breathing
+   room are rendered by the nested `.jt-glyph` span instead (see below),
+   which can visually overflow `.jt`'s box (`overflow: visible`) without
+   affecting the box's own contribution to the line's layout width. */
+.jt {
+  cursor: pointer;
+  display: inline-block;
+  width: 1ch;
+  font-size: 13px;
+  line-height: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+  overflow: visible;
+}
+/* The actual visible triangle glyph — bigger font, shifted slightly left
+   (via `left`, not margin) so its glyph ink doesn't crowd/overlap the
+   JSON text that starts immediately after `.jt`'s fixed-width box (a
+   margin-right here would have no effect, since nothing follows this
+   glyph *inside* `.jt`'s own box). Purely a visual overlay; see `.jt`
+   comment above for why this must NOT affect `.jt`'s own box width. */
+.jt-glyph {
+  display: inline-block;
+  font-size: 16px;
+  color: #555;
+  position: relative;
+  top: -1px;
+  left: -4px;
+}
+/* Zero-width but still-selectable span holding one real space character.
+   The visible `.jt` glyph above is user-select:none (excluded from any
+   copy/paste), so this compensates by contributing the "missing" real
+   indent-space character to copied/pasted text — keeping the indentation
+   of copy-pasted JSON identical to plain JSON.stringify output (mirrors
+   the old ui.go RegHTMLify ".hide" trick). */
+.jt-copysp {
+  display: inline-block;
+  width: 0;
+}
+/* Collapsed "..." placeholder shown when block is hidden */
+.jd {
+  cursor: pointer;
+  color: #888;
+  padding: 0 2px;
+}
+/* .jb (json block span) has no default CSS; display toggled inline via JS */
+
+#json-output {
+  flex: 1;
+  padding: 8px;
+  overflow: auto;
+  background: ghostwhite;
+  white-space: pre;
+  font-family: monospace;
+  font-size: 13px;
+  line-height: 17px;
+  tab-size: 2;
+}
+
+.json-key { color: #900; }
+.json-str { color: #090; }
+.json-url { color: #2060a0; text-decoration: underline; text-decoration-style: dotted; cursor: pointer; }
+.json-url:hover { color: #003d80; text-decoration-style: solid; }
+.json-num { color: #07c; }
+.json-bool { color: #c70; }
+.json-null { color: #999; }
+.json-link { color: #07c; cursor: pointer; text-decoration: underline; }
+
+/* JSON coloring tri-state option (see Config page / optJsonColorMode()).
+   'full' is the default above — no overrides needed. 'minimal' makes
+   every token black except linkified URL values; 'none' makes
+   everything black, including links (the underline still shows so
+   links remain visually identifiable/clickable). */
+body[data-json-color="minimal"] .json-key,
+body[data-json-color="minimal"] .json-str,
+body[data-json-color="minimal"] .json-num,
+body[data-json-color="minimal"] .json-bool,
+body[data-json-color="minimal"] .json-null { color: #000; }
+
+body[data-json-color="none"] .json-key,
+body[data-json-color="none"] .json-str,
+body[data-json-color="none"] .json-num,
+body[data-json-color="none"] .json-bool,
+body[data-json-color="none"] .json-null,
+body[data-json-color="none"] .json-url,
+body[data-json-color="none"] .json-url:hover { color: #000; }
+
+/* ---- Left panel options (JSON view) ---- */
+
+.lp-section { margin-bottom: 10px; }
+.lp-title { font-weight: bold; font-size: 12px; color: #333; margin-bottom: 4px; }
+/* Collapsible section title (currently only used by Filters) */
+.lp-title-collapsible { cursor: pointer; user-select: none; }
+.lp-title-collapsible:hover { color: #000; }
+.lp-title-twisty {
+  display: inline-block;
+  width: 1ch;
+  margin-right: 3px;
+  color: #555;
+}
+.lp-title-twisty-right { margin-right: 0; margin-left: 8px; }
+.lp-title-count { font-weight: normal; color: #667; }
+.lp-title-clear {
+  font-weight: normal;
+  font-size: 11px;
+  color: #06c;
+  margin-left: 6px;
+  cursor: pointer;
+}
+.lp-title-clear:hover { text-decoration: underline; }
+/* Indents the Filter Builder's body (JSON view only) 6px to visually align
+   with the checkbox rows in Options/Inlines below it — without this the
+   Filters section reads as flush-left while everything else is indented,
+   making it hard to tell where Filters ends and Options begins. */
+.lp-filter-indent { padding-left: 6px; }
+.lp-item { display: grid; grid-template-columns: auto 1fr 38px; align-items: center; gap: 4px; padding: 2px 4px; font-size: 12px; font-family: monospace; }
+.lp-item input[type=checkbox] { cursor: pointer; flex-shrink: 0; }
+.lp-inline-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lp-dotstar { display: flex; align-items: center; gap: 2px; justify-content: flex-end; }
+.lp-dotstar input[type=checkbox] { cursor: pointer; }
+.lp-dotstar-label { font-size: 11px; color: #888; }
+.lp-sep-line { border-top: 1px dashed #999; margin: 3px 0; }
+.lp-even { background: #e6eef9; }
+.lp-no-opts { color: #aaa; font-style: italic; font-size: 12px; padding: 10px 6px; text-align: center; }
+.lp-apply {
+  margin-top: 8px;
+  width: 100%;
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid #2060a0;
+  background: #2060a0;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 12px;
+}
+.lp-apply:hover { background: #c4c4c4; color: #222; border-color: #aaa; }
+.lp-apply:disabled {
+  background: #ccc; border-color: #bbb; color: #888; cursor: default;
+}
+.lp-apply:disabled:hover { background: #ccc; color: #888; border-color: #bbb; }
+.lp-divider-apply {
+  display: flex; align-items: center; gap: 8px; margin: 6px 0;
+}
+.lp-divider-line { flex: 1; border-top: 1px solid #ddd; }
+.lp-apply-top {
+  width: auto; margin-top: 0; padding: 2px 10px; font-size: 11px;
+  border-radius: 10px;
+}
+.lp-divider { border: none; border-top: 1px solid #ddd; margin: 6px 0; }
+.lp-filter-area { font-family: monospace; font-size: 11px; width: 100%; min-height: 60px; resize: vertical; border: 1px solid #ccc; border-radius: 4px; padding: 3px; }
+.lp-nav-item { font-size: 12px; padding: 3px 6px; cursor: pointer; border-radius: 4px; color: #335; transition: background 0.1s; text-decoration: none; }
+.lp-nav-item:hover { background: #e8eef8; }
+.lp-nav-active { background: #dde6f5; font-weight: bold; color: #224; }
+.lp-nav-active:hover { background: #ccd9f0; }
+/* One combined "Model (Source)" / "Capabilities (Offered)" row — main +
+   optional parenthetical sub nav item share a single line instead of
+   stacking on separate rows. */
+.lp-nav-row { display: block; }
+.lp-nav-item.lp-nav-inline { display: inline-block; padding: 3px 4px; }
+.lp-nav-sub { font-size: 12px; color: #669; }
+
+/* Filter builder (JSON left panel) */
+.fb-adv-toggle {
+  display: block; font-size: 11px; color: #888; margin-bottom: 6px;
+  cursor: pointer;
+}
+.fb-adv-toggle input {
+  cursor: pointer; vertical-align: middle; margin-right: 3px;
+}
+.fb-empty {
+  color: #aaa; font-style: italic; font-size: 11px; padding: 4px 2px;
+}
+.fb-groups { margin-bottom: 6px; }
+.fb-group-row {
+  position: relative;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px;
+  padding: 3px 4px; border: 1px solid #ddd; border-radius: 4px;
+  background: #f7f7f7; margin: 8px 0;
+}
+/* "F1"/"F2"/... badge, overlayed over the group row's top-left corner */
+.fb-group-label {
+  position: absolute; top: -8px; left: -6px;
+  font-family: monospace; font-size: 10px; font-weight: bold;
+  color: #fff; background: #6b8fc7; border-radius: 8px;
+  padding: 1px 5px; line-height: 1.4; cursor: default;
+}
+.fb-chip {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-family: monospace; font-size: 11px; background: #e6eef9;
+  color: #234; border: 1px solid #cddaf0; border-radius: 10px;
+  padding: 1px 6px;
+}
+.fb-chip-x, .fb-group-x { cursor: pointer; color: #888; font-weight: bold; }
+.fb-chip-x:hover, .fb-group-x:hover { color: #c33; }
+.fb-chip-text { cursor: pointer; }
+.fb-chip-text:hover { text-decoration: underline; }
+.fb-chip-editing {
+  background: #fff6cc; border-color: #e0b400; box-shadow: 0 0 0 1px #e0b400;
+}
+.fb-group-x { margin-left: auto; padding-left: 4px; }
+.fb-and { font-size: 10px; color: #888; font-weight: bold; }
+.fb-or {
+  font-size: 10px; color: #888; font-weight: bold; text-align: center;
+  margin: 0;
+}
+.fb-editing-hint { font-size: 11px; color: #8a6d00; margin: 2px 0 6px; }
+.fb-wizard-label {
+  display: flex; align-items: center; gap: 6px; margin: 8px 0;
+}
+.fb-wizard-label-text { font-size: 11px; color: #888; white-space: nowrap; }
+.fb-wizard-label .lp-divider-line { border-top: 1px dashed #ddd; }
+.fb-breadcrumb {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 2px;
+  margin-bottom: 6px;
+}
+.fb-crumb {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-family: monospace; font-size: 12px; background: #eef3fb;
+  color: #234; border: 1px solid #d6e0f0; border-radius: 10px;
+  padding: 1px 4px 1px 8px;
+}
+.fb-crumb-text { cursor: pointer; }
+.fb-crumb-text:hover { text-decoration: underline; }
+.fb-crumb-text-static { cursor: default; }
+.fb-crumb-text-static:hover { text-decoration: none; }
+.fb-crumb-x {
+  cursor: pointer; color: #888; font-weight: bold; padding: 0 4px;
+}
+.fb-crumb-x:hover { color: #c33; }
+.fb-crumb-sep { font-size: 12px; color: #999; padding: 0 1px; }
+.fb-wizard { padding-top: 0; }
+.fb-seg-row {
+  display: flex; align-items: center; gap: 4px; margin-bottom: 4px;
+}
+.fb-seg-label { font-size: 11px; color: #666; flex-shrink: 0; width: 78px; }
+.sort-label {
+  font-size: 12px; font-weight: bold; color: #333; flex-shrink: 0;
+}
+.sort-order-row { gap: 6px; }
+.sort-order-label { font-size: 11px; color: #666; flex-shrink: 0; }
+.boolSeg.sort-order-seg { height: 18px; }
+.boolSeg.sort-order-seg .boolSegBtn {
+  font-size: 11px; min-width: 28px; padding: 0 6px;
+}
+.fb-seg-select, .fb-op-select {
+  flex: 1; min-width: 0; font-size: 11px; padding: 2px 3px;
+  border: 1px solid #ccc; border-radius: 4px;
+  text-overflow: ellipsis; overflow: hidden; white-space: nowrap;
+}
+.fb-seg-custom, .fb-val-input {
+  flex: 1; min-width: 0; font-size: 11px; font-family: monospace;
+  padding: 2px 4px; border: 1px solid #ccc; border-radius: 4px;
+}
+.fb-seg-custom-commit {
+  flex-shrink: 0; font-size: 12px; line-height: 1; padding: 2px 6px;
+  border: 1px solid #b8cce4; border-radius: 4px;
+  background: #eef3fa; color: #2060a0; cursor: pointer;
+}
+.fb-seg-custom-commit:disabled {
+  border-color: #ccc; background: #f2f2f2; color: #aaa; cursor: default;
+}
+.fb-op-row { display: flex; align-items: center; gap: 4px; margin-bottom: 4px; }
+.fb-error { color: #c33; font-size: 11px; margin-bottom: 4px; }
+.sort-clear-btn {
+  font-size: 11px; color: #888; cursor: pointer; margin-left: auto;
+}
+.sort-clear-btn:hover { color: #c33; text-decoration: underline; }
+.fb-add-row { display: flex; gap: 6px; margin-bottom: 4px; flex-wrap: wrap; }
+/* Split "+ Add (AND)" button: the button + an overlay <select> showing
+   only "F1"/"F2"/... on its right edge, so the AND-target picker reads
+   as one two-zone control rather than a separate dropdown. */
+.fb-and-split {
+  position: relative; flex: 1; min-width: 132px; display: flex;
+}
+.fb-and-split-btn { flex: 1; text-align: left; padding-right: 40px; }
+.fb-and-split-target {
+  position: absolute; top: 1px; right: 1px; bottom: 1px; z-index: 2;
+  width: 37px; font-size: 10px; padding: 0 1px; border: none;
+  border-left: 1px solid #b8cce4; border-radius: 0 3px 3px 0;
+  background: #dce8f8; color: #2060a0; cursor: pointer;
+}
+.fb-add-btn {
+  flex: 1; min-width: 96px; font-size: 11px; padding: 3px 4px;
+  border-radius: 4px;
+  border: 1px solid #b8cce4; background: #eef3fa; color: #2060a0;
+  cursor: pointer;
+}
+.fb-add-btn:hover:not(:disabled) { background: #2060a0; color: #fff; }
+.fb-add-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.fb-cancel-btn {
+  border-color: #999; background: #f2f2f2; color: #555;
+}
+.fb-cancel-btn:hover { background: #999; color: #fff; }
+
+/* ---- Error / empty states ---- */
+
+.state-msg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #999;
+  font-size: 15px;
+  font-style: italic;
+}
+
+.error-banner {
+  background: #fee;
+  border: 1px solid #c00;
+  border-radius: 4px;
+  padding: 10px 34px 10px 14px;
+  margin: 16px;
+  font-size: 13px;
+  color: #900;
+  white-space: pre-wrap;
+  position: relative;
+}
+
+.error-banner-msg {
+  white-space: pre-wrap;
+}
+
+.error-banner-close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: none;
+  border: none;
+  color: #900;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
+.error-banner-close:hover {
+  color: #600;
+}
+
+/* ---- Loading spinner ---- */
+
+.spinner-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: #888;
+  gap: 10px;
+}
+/* ---- Responsive ---- */
+
+@media (max-width: 600px) {
+  #header { gap: 5px; padding: 4px 6px; }
+  .view-btn { padding: 2px 7px; font-size: 12px; }
+  #left-panel { width: 160px; min-width: 120px; }
+  .tile { min-width: 160px; }
+}
+
+/* ---- Home page ---- */
+
+.home-page {
+  padding: 20px;
+}
+
+.home-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 16px;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 280px);
+  gap: 14px;
+}
+
+.server-card {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 14px 16px;
+  width: 280px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+  color: inherit;
+}
+
+.server-card-add {
+  border-style: dashed;
+  background: #fafafa;
+}
+
+.server-card-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 6px;
+  min-height: 20px;
+}
+.server-card-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.2;
+  align-self: end;
+}
+.server-card-icon {
+  flex-shrink: 0;
+  display: block;
+}
+.server-card-err-badge {
+  flex-shrink: 0;
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  background: #c00;
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: bold;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  margin-left: 4px;
+}
+.server-card-err-popup {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 4px);
+  z-index: 200;
+  background: white;
+  border: 1px solid #c00;
+  border-radius: 8px;
+  padding: 12px 14px;
+  min-width: 240px;
+  max-width: 360px;
+  white-space: normal;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+.server-card-err-popup-title {
+  font-size: 13px;
+  font-weight: bold;
+  color: #c00;
+}
+.server-card-err-popup-msg {
+  font-size: 12px;
+  font-family: monospace;
+  color: #333;
+  word-break: break-word;
+  line-height: 1.4;
+}
+.server-card-warn-badge {
+  flex-shrink: 0;
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  background: #d99a00;
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: bold;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  margin-left: 4px;
+}
+.reg-data-warn-banner {
+  background: #fff8e1;
+  border: 1px solid #d99a00;
+  border-radius: 6px;
+  margin: 8px 0 12px;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #6b5400;
+}
+.reg-data-warn-banner-summary {
+  cursor: pointer;
+  user-select: none;
+  font-weight: bold;
+}
+.reg-data-warn-banner-list {
+  display: none;
+  margin: 8px 0 0;
+  padding-left: 20px;
+  line-height: 1.5;
+}
+.reg-data-warn-banner-expanded .reg-data-warn-banner-list {
+  display: block;
+}
+.server-card-divider { border: none; border-top: 1px solid #bbb; margin: 0 0 8px; }
+.server-card-desc {
+  font-size: 11px;
+  color: #666;
+  margin: 4px 0 6px;
+  line-height: 1.4;
+}
+
+.server-card-groups-label {
+  font-size: 10px;
+  font-weight: bold;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+.server-card-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-height: 16px;
+  margin-bottom: 10px;
+}
+.server-card-err-text {
+  font-size: 11px;
+  font-family: monospace;
+  color: #c00;
+  margin-bottom: 10px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+.group-type-none {
+  font-size: 11px;
+  color: #888;
+  font-style: italic;
+}
+
+.server-card-count {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.server-card-url {
+  font-size: 10px;
+  color: #888;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+.home-btn { border-radius: 6px; border: 1px solid #2060a0; background: #2060a0; color: white; padding: 3px 12px; font-size: 12px; font-weight: bold; cursor: pointer; }
+
+/* ---- Home group/layout controls ---- */
+.group-type-item {
+  font-size: 12px;
+  color: #444;
+  background: #f0f0f0;
+  border-radius: 4px;
+  padding: 1px 6px;
+  text-decoration: none;
+  display: inline-block;
+}
+/* Only <a> pills (Group Types themselves) are actually clickable links to
+   a collection; resource-type pills reuse this class but are plain,
+   non-navigable <span>s (see plan.md "resource pill hover help"), so the
+   pointer cursor + hover-underline are scoped to the <a> form only. */
+a.group-type-item { cursor: pointer; }
+a.group-type-item:hover { background: #e0e0e0; color: #222; text-decoration: underline; }
+.home-btn:hover { background: #c4c4c4; color: #222; border-color: #aaa; }
+.home-btn-danger { border-color: #a00; background: #fff; color: #a00; }
+.home-btn-danger:hover { background: #fee; border-color: #a00; color: #a00; }
+.home-btn-secondary { border-color: #aaa; background: #f0f0f0; color: #444; }
+.home-btn-secondary:hover { background: #e0e0e0; }
+
+/* ---- Config page ---- */
+
+.config-page {
+  padding: 24px;
+}
+.config-section {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+.config-section-title {
+  margin: 0 0 14px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
+}
+.config-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.config-section-header .config-section-title { margin: 0 0 14px; }
+.config-section-header-btns { display: flex; gap: 8px; align-items: center; }
+.config-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.config-table th {
+  text-align: left;
+  padding: 8px 12px;
+  background: #e2e2e2;
+  border-bottom: 2px solid #ccc;
+  color: #333;
+  font-weight: bold;
+}
+.config-table th.cfg-sortable {
+  cursor: pointer;
+  user-select: none;
+}
+.config-table th.cfg-sortable:hover { background: #d5d5d5; }
+.cfg-sort-arrow {
+  display: inline-block;
+  margin-left: 4px;
+  color: #666;
+  font-size: 11px;
+}
+.config-table td {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 7px 12px;
+  vertical-align: middle;
+}
+.config-table tr:last-child td { border-bottom: none; }
+.cfg-url-input {
+  width: 100%;
+  font-size: 13px;
+  padding: 3px 6px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+.cfg-name-input {
+  width: 100%;
+  font-size: 13px;
+  padding: 3px 6px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+.cfg-name-input::placeholder { color: #888; font-style: italic; }
+.cfg-proxy-cell { text-align: center; }
+.cfg-proxy-cell input[type=checkbox] { cursor: pointer; }
+.cfg-select-cell { text-align: center; width: 26px; }
+.cfg-select-cell input[type=checkbox] { cursor: pointer; }
+.cfg-hide-cell { text-align: center; }
+.cfg-hide-cell input[type=checkbox] { cursor: pointer; }
+.cfg-actions { white-space: nowrap; display: flex; gap: 6px; justify-content: flex-end; }
+.cfg-btn {
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  background: #f4f4f4;
+  cursor: pointer;
+  color: #333;
+}
+.cfg-btn:hover { background: #e8e8e8; }
+.cfg-btn:disabled { color: #999; border-color: #ccc; background: #f8f8f8; cursor: default; }
+.cfg-btn:disabled:hover { background: #f8f8f8; }
+.config-section-desc { font-size: 13px; color: #666; margin: 0 0 14px; line-height: 1.5; }
+.cfg-reset-row { display: flex; gap: 10px; }
+/* Primary action (e.g. "+ Add X" / "Create" on collection pages) — solid
+   blue, matching the app's blue action-button scheme (.eg-link-btn/
+   .editorBtn's Save override) instead of the plain neutral gray every
+   other .cfg-btn uses. */
+.cfg-btn-primary { background: #2060a0; border-color: #2060a0; color: #fff; }
+.cfg-btn-primary:hover { background: #c4c4c4; color: #000; }
+.cfg-btn-primary:disabled { background: #f8f8f8; border-color: #ccc; color: #999; }
+/* Destructive action (e.g. "Delete Selected") — solid red, matching
+   .editorBtnDanger's weight instead of the previous light outline-only
+   red-on-gray look. */
+.cfg-btn-danger { background: #a00; border-color: #a00; color: #fff; }
+.cfg-btn-danger:hover { background: #c4c4c4; color: #000; }
+.cfg-btn-danger:disabled { background: #f8f8f8; border-color: #ccc; color: #999; }
+/* Discard-in-progress-edits action (e.g. "Cancel" on the collection
+   add-form toggle, or the Config page's per-row Cancel) — solid brown,
+   matching #dataUndoBtn/#jsonEditUndoBtn's "Undo" color, since both are
+   semantically the same "give up my unsaved edits" action, just with
+   different surrounding UI (Cancel closes the form, Undo resets it in
+   place). */
+.cfg-btn-cancel { background: #a06020; border-color: #a06020; color: #fff; }
+.cfg-btn-cancel:hover { background: #c4c4c4; color: #000; }
+.cfg-btn-cancel:disabled { background: #f8f8f8; border-color: #ccc; color: #999; }
+/* Add-new-server row — a real <tfoot> row sharing the same <td> column
+   classes/widths as the data rows above it, so its "Add" button lines up
+   exactly under the "Edit" buttons rather than approximating it via a
+   separately-laid-out flex row. */
+.cfg-add-tr td { background: #fafafa; border-top: 2px solid #e2e2e2; }
+.cfg-inline-error {
+  display: block;
+  font-size: 11px;
+  color: #a00;
+  margin-top: 3px;
+}
+
+/* "Scan for registries" results dialog — a simple centered overlay,
+   consistent with the rest of the Config page's visual language (same
+   .cfg-btn buttons, same border/radius conventions as .config-section). */
+.cfg-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.cfg-modal {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 560px;
+  width: 90%;
+  max-height: 80vh;
+  overflow: auto;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+.cfg-modal-title { margin: 0 0 12px; font-size: 15px; font-weight: bold; color: #333; }
+.cfg-scan-group-title {
+  margin: 14px 0 6px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.cfg-scan-group-title:first-of-type { margin-top: 0; }
+.cfg-scan-select-all {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #555;
+  cursor: pointer;
+  padding-bottom: 8px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.cfg-scan-list { list-style: none; margin: 0; padding: 0; }
+.cfg-scan-item {
+  font-size: 13px;
+  padding: 5px 0;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+}
+.cfg-scan-item:last-child { border-bottom: none; }
+.cfg-scan-item label { display: flex; align-items: center; gap: 6px; cursor: pointer; flex: 1; }
+.cfg-scan-item-known { color: #888; }
+.cfg-scan-empty { font-size: 13px; color: #888; }
+.cfg-modal-btns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+.config-local-badge {
+  font-size: 10px;
+  background: #e8f4e8;
+  color: #396;
+  border-radius: 4px;
+  padding: 1px 5px;
+  margin-left: 6px;
+  font-weight: normal;
+}
+.cfg-option-row {
+  display: grid;
+  /* Fixed-width label column so every row's control(s) start at the
+     same horizontal position; description spans both columns below. */
+  grid-template-columns: 150px 1fr;
+  column-gap: 12px;
+  row-gap: 6px;
+  padding: 12px 0;
+  cursor: pointer;
+}
+.cfg-option-row + .cfg-option-row { border-top: 1px solid #eee; }
+.cfg-option-label {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+}
+.cfg-option-row input[type="checkbox"] {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: start;
+  align-self: center;
+  margin: 0;
+  cursor: pointer;
+}
+.cfg-option-desc {
+  grid-column: 1 / 3;
+  grid-row: 2;
+  font-size: 12px;
+  color: #888;
+  line-height: 1.4;
+}
+
+/* Multi-choice option group (e.g. JSON coloring tri-state) — the outer
+   row isn't itself a checkbox/label, so it's not clickable/cursor:pointer
+   like the single-checkbox rows above. Shares the same grid as the
+   checkbox rows so labels/controls/descriptions all line up. */
+.cfg-option-group { cursor: default; }
+.cfg-radio-set {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  gap: 20px;
+}
+.cfg-radio-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+.cfg-radio-row input[type="radio"] { margin: 0; cursor: pointer; }
+.cfg-radio-label { font-size: 12.5px; color: #333; }
+
+/* ---- Inline server error popup ---- */
+
+.ht-name-link { cursor: pointer; color: #2255cc; text-decoration: none; }
+.ht-name-link a { color: inherit; text-decoration: none; }
+.ht-name-link:hover, .ht-name-link a:hover { text-decoration: underline; }
+.ht-loading { color: #888; font-style: italic; }
+.ht-action { white-space: nowrap; }
+
+/* ---- Home "Registries" List view — card-list redesign ----
+   A stack of rounded row-cards (icon + name/subtitle + group-type pills +
+   url), visually consistent with the Grid tiles, rather than a plain
+   spreadsheet-style <table>. Capped width so it doesn't feel abandoned on
+   a wide viewport. See plan.md "List view visual redesign for Registries
+   home page". */
+.reg-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 900px;
+}
+.reg-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  position: relative;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.reg-row:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-color: #ccc; }
+/* No opacity dimming on the whole row (it would bleed into the absolutely-
+   positioned error popup, making it look faded/washed out) — the red
+   "Connection failed" badge already communicates the state clearly. */
+.reg-row-icon { flex-shrink: 0; }
+.reg-row-main { flex: 1; min-width: 0; }
+.reg-row-title { display: flex; align-items: center; gap: 8px; }
+.reg-row-name { font-weight: bold; font-size: 14px; }
+.reg-row-sub {
+  display: none;
+  font-size: 12px;
+  color: #888;
+  margin-top: 2px;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.reg-row-err-badge {
+  font-size: 11px;
+  font-weight: bold;
+  color: #a00;
+  background: #fde8e8;
+  border: 1px solid #f0b8b8;
+  border-radius: 10px;
+  padding: 1px 8px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.reg-row-err-badge:hover { background: #fbd6d6; }
+.reg-row-warn-badge {
+  font-size: 11px;
+  font-weight: bold;
+  color: #6b5400;
+  background: #fff3cd;
+  border: 1px solid #d99a00;
+  border-radius: 10px;
+  padding: 1px 8px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.reg-row-warn-badge:hover { background: #ffe9a8; }
+.gt-row-warn-badge {
+  font-size: 11px;
+  font-weight: bold;
+  color: #6b5400;
+  background: #fff3cd;
+  border: 1px solid #d99a00;
+  border-radius: 10px;
+  padding: 1px 6px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  margin-left: 4px;
+}
+.gt-row-warn-badge:hover { background: #ffe9a8; }
+.reg-row-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+.reg-row-url {
+  font-size: 11px;
+  color: #888;
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+  width: 100%;
+}
+.reg-row-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+  max-width: 280px;
+}
+@media (max-width: 768px) {
+  .reg-row { flex-wrap: wrap; }
+  .reg-row-side { max-width: 100%; align-items: flex-start; }
+  .reg-row-groups, .reg-row-url { justify-content: flex-start; text-align: left; }
+}
+
+/* ---- Home "Group Types" List view — card-list redesign ----
+   Mirrors the Registries List row style, but each row's "owner" is the
+   registry it came from (icon + name), not a URL — since group types
+   here are never merged/deduplicated across registries (two registries
+   could use the same group-type name with entirely different model
+   definitions), every row is its own distinct (registry, group-type)
+   entity, same as a Registries List row is its own distinct registry.
+   See plan.md "Group Types List view card-list redesign". */
+.gt-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 900px;
+}
+.gt-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.gt-row:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-color: #ccc; }
+.gt-row-loading { color: #888; font-style: italic; font-size: 13px; }
+.gt-row-top { display: flex; align-items: center; gap: 14px; }
+.gt-row-icon { flex-shrink: 0; }
+.gt-row-main { flex: 1; min-width: 0; }
+.gt-row-title { display: flex; align-items: center; gap: 8px; }
+.gt-row-name { font-weight: bold; font-size: 14px; color: #2255cc; cursor: pointer; text-decoration: none; }
+.gt-row-name:hover { text-decoration: underline; }
+.gt-row-count { font-size: 12px; color: #888; white-space: nowrap; }
+.gt-row-sub {
+  font-size: 12px;
+  color: #888;
+  margin-top: 2px;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.gt-row-side {
+  display: flex;
+  align-items: flex-start;
+  flex-shrink: 0;
+  max-width: 280px;
+}
+.gt-row-resources { display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end; }
+.gt-row-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.gt-row-registry {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #888;
+  text-decoration: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.gt-row-registry:hover { color: #2255cc; text-decoration: underline; }
+.gt-row-reg-name { white-space: nowrap; }
+.gt-row-url {
+  font-size: 11px;
+  color: #888;
+  flex: 1;
+  min-width: 0;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 768px) {
+  .gt-row-top { flex-wrap: wrap; }
+  .gt-row-side { max-width: 100%; }
+  .gt-row-resources { justify-content: flex-start; }
+  .gt-row-bottom { flex-wrap: wrap; }
+  .gt-row-url { text-align: left; }
+}
+
+/* ============================================================
+   Entity grid view — removed (Grid view no longer exists for any
+   entity/collection page; List view is the only option — see plan.md
+   "Grid view removed"). .coll-tile-res-pill/-pill-clickable/-none are
+   still used by List view's own sub-collection pills — kept below.
+   ============================================================ */
+
+.coll-tile-res-pill { font-size: 10px; color: #444; background: #f0f0f0; border-radius: 4px; padding: 1px 5px; text-decoration: none; display: inline-block; }
+/* Nested-collection pills that navigate straight into that collection (e.g.
+   "files (2)" on a group tile/row) — cursor + hover to signal clickability.
+   Kept as a separate class from the base .coll-tile-res-pill since that
+   class is also used for the non-clickable Resource Types list on the
+   Registry root's Group Type tiles (model schema names, not navigable). */
+.coll-tile-res-pill-clickable { position: relative; z-index: 2; cursor: pointer; }
+.coll-tile-res-pill-clickable:hover { background: #dce4f5; color: #2060a0; }
+.coll-tile-res-none { font-size: 11px; color: #888; font-style: italic; }
+
+/* ---- Section-view endpoint tiles (Model, Capabilities, etc.) ---- */
+.eg-coll-tile {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border: 1px solid #c5cce0;
+  border-radius: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  width: 200px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.07);
+  transition: background-color 0.1s, box-shadow 0.1s, border-color 0.1s;
+  color: inherit;
+  text-decoration: none;
+}
+.eg-coll-tile:hover { background-color: #f0f4ff; box-shadow: 0 4px 10px rgba(0,0,0,0.12); border-color: #99b; }
+.eg-coll-tile:active { transform: scale(0.98); }
+.eg-coll-name { font-weight: bold; font-size: 13px; color: #222; }
+.eg-coll-mutable-badge {
+  font-size: 10px;
+  color: #5a8a5a;
+  background: #e6f5e6;
+  border-radius: 4px;
+  padding: 1px 5px;
+  margin-top: 5px;
+  align-self: flex-start;
+}
+
+/* ---- Details panel ---- */
+.eg-page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e0e4ee;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.eg-page-title-type {
+  letter-spacing: 0.04em;
+  color: #222;
+}
+.eg-page-title-id {
+  color: #222;
+  flex: 1;
+}
+.eg-page-title-id-prefix {
+  color: #222;
+}
+.eg-page-title-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.eg-page-title-icon-err {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+.eg-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin-bottom: 6px;
+}
+.eg-identity { align-items: center; gap: 8px 16px; margin-bottom: 10px; }
+.eg-label {
+  font-size: 13px;
+  font-weight: bold;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  line-height: 20px;
+}
+.eg-value {
+  font-size: 13px;
+  font-family: inherit;
+  color: #222;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  line-height: 20px;
+}
+/* Live thumbnail preview shown next to the spec-defined "icon" attribute's
+   URL/link in a Properties table (Registry/Group/Resource/Version) — see
+   plan.md "icon attribute preview thumbnail". Sized to sit comfortably next
+   to a single line of link text; hidden automatically (via inline onerror)
+   if the URL doesn't resolve to a loadable image. */
+.eg-icon-preview-wrap { display: inline-flex; align-items: center; gap: 8px; }
+.eg-icon-preview { width: 20px; height: 20px; object-fit: contain; border-radius: 3px; vertical-align: middle; }
+
+.eg-icon { width: 24px; height: 24px; object-fit: contain; }
+.eg-icon-err { width: 24px; height: 24px; align-items: center; justify-content: center; cursor: help; }
+
+/* Group/Resource Type + instance icon thumbnails — Model/ModelSource viewer
+   nav items, Group Types list, Groups/Resources list rows + headers,
+   Resource/Version page titles (see plan.md "Icon propagation from model +
+   entity data"). row-icon-thumb sits inline with table rows/pills/nav
+   labels; page titles reuse the existing .eg-page-title-icon rule below.
+   Hides automatically via inline onerror if the URL doesn't resolve. */
+.row-icon-thumb {
+  width: 16px; height: 16px; object-fit: contain; border-radius: 2px;
+  vertical-align: middle; flex: none; margin-right: 6px;
+}
+.eg-temporal { color: #555; }
+.eg-tech-value { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+.eg-link-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 8px;
+  line-height: 18px;
+  font-size: 11px;
+  font-weight: bold;
+  color: #2060a0;
+  background: #eef3fa;
+  border: 1px solid #b8cce4;
+  border-radius: 4px;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+.eg-link-btn:hover { background: #dce8f8; border-color: #7aabdb; }
+.eg-copy-btn { cursor: pointer; font-family: inherit; }
+.eg-link-btn-nav { background: #eef8ee; border-color: #b8d4b8; color: #396; }
+.eg-link-btn-nav:hover { background: #dceedd; border-color: #8ab88a; }
+.eg-epoch { font-variant-numeric: tabular-nums; margin-right: 4px; }
+.eg-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: #333;
+  color: #fff;
+  font-size: 13px;
+  padding: 7px 18px;
+  border-radius: 20px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+  z-index: 9999;
+}
+.eg-toast-show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+/* Spec-defined attribute rows (Created/Modified/Epoch/Labels/etc, plus any
+   remaining model-driven spec attrs) and unknown extension attrs (below
+   the .eg-ext-sep <hr>) each get their own two-column CSS Grid instance
+   (.eg-spec-rows / .eg-ext-rows, both using this shared .eg-attr-grid
+   layout) so every row's value lines up in the same left-aligned column
+   within that section — but the two sections' column widths are fully
+   independent of each other (spec attr names have no relation to
+   extension attr names). Each direct child (.eg-row / .eg-ext-complex)
+   becomes `display: contents` so its own two children (label + value)
+   are placed directly into the grid as column 1 / column 2 — this is
+   why every row must contribute exactly two top-level children (see
+   eg-technical's single value-wrapper span in app.js for how rows with
+   multiple bits of content handle this). */
+.eg-attr-grid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 16px;
+  row-gap: 6px;
+  align-items: baseline;
+}
+.eg-attr-grid > .eg-row,
+.eg-attr-grid > .eg-ext-complex { display: contents; }
+.eg-label-list { display: inline-flex; flex-wrap: wrap; gap: 4px 6px; }
+.eg-label-pair { display: inline-flex; }
+.eg-label-key {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-family: monospace;
+  font-weight: bold;
+  color: #557;
+  background: #f0f0f8;
+  border: 1px solid #ccd;
+  border-radius: 3px 0 0 3px;
+  padding: 1px 5px;
+}
+.eg-label-val {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-family: monospace;
+  color: #333;
+  background: #fafafa;
+  border: 1px solid #ccd;
+  border-left: none;
+  border-radius: 0 3px 3px 0;
+  padding: 1px 5px;
+}
+.eg-mono { font-family: monospace; font-size: 12px; word-break: break-all; }
+.eg-link { color: #2060a0; text-decoration: underline; }
+.eg-link:hover { color: #003d80; }
+.eg-ext-sep { border: none; border-top: 1px solid #eee; margin: 12px 0; }
+
+/* Complex attribute block (objects/arrays) — key in column 1, its value
+   tree in column 2 of the enclosing .eg-attr-grid (spec or extension).
+   No connecting border-left here since the value is no longer stacked
+   "attached" below the key — the grid column itself shows the
+   association; nested levels inside the tree get their own compact grid
+   too (see .vt-obj below). */
+.eg-ext-complex { margin-bottom: 8px; }
+.eg-ext-complex-key {
+  grid-column: 1;
+  font-size: 13px;
+  font-weight: bold;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.eg-ext-complex-body { grid-column: 2; }
+
+/* Value tree — each object/map level renders as its own small two-column
+   grid (key | value), scoped to just that object's own keys, so a nested
+   complex attribute's column width never affects its parent's or a
+   sibling's. .vt-kv/.vt-kv-block become `display: contents` so their two
+   children (key span + value-wrapper span) become the actual grid items;
+   any further-nested object recurses into another such grid inside its
+   own value cell (see renderValueTree() in app.js), so nesting is shown
+   purely by the resulting column indentation — no manual depth-based
+   margin or connecting border-left is needed any more. */
+.vt-null  { color: #aaa; font-style: italic; font-family: monospace; }
+.vt-empty { color: #aaa; font-style: italic; }
+.vt-obj {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 10px;
+  row-gap: 2px;
+  align-items: baseline;
+}
+.vt-kv,
+.vt-kv-block { display: contents; }
+.vt-key {
+  grid-column: 1;
+  font-size: 11px;
+  font-weight: bold;
+  color: #557;
+  white-space: nowrap;
+}
+.vt-kv-value {
+  grid-column: 2;
+  font-size: 12px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.vt-arr-item {
+  font-size: 12px;
+  line-height: 1.7;
+  display: flex;
+  align-items: baseline;
+}
+.vt-arr-item > .vt-obj,
+.vt-arr-item > .vt-arr { flex: 1; }
+.vt-arr-sep {
+  border-top: 1px solid #e0e4ee;
+  margin: 5px 0 4px;
+}
+.vt-arr-idx {
+  font-size: 10px;
+  font-weight: bold;
+  color: #99a;
+  margin-right: 4px;
+  margin-left: 0;
+  font-family: monospace;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.eg-twisty {
+  font-size: 11px;
+  color: #557;
+  background: #f0f0f8;
+  border: 1px solid #ccd;
+  border-radius: 4px;
+  padding: 2px 7px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.eg-twisty:hover { background: #e2e2f0; border-color: #aab; }
+.eg-meta-details { margin-bottom: 12px; }
+.eg-meta-details-flat { margin-bottom: 16px; }
+.eg-meta-details-flat .xr-table { margin-bottom: 0; }
+
+  /* ---- Model Editor/Viewer ---- */
+  #modelEditor {
+    display: flex ;
+    flex-direction: column ;
+    background: ghostwhite ;
+    font-family: sans-serif ;
+    font-size: 13px ;
+    overflow: hidden ;
+    flex: 1 ;
+    height: 100% ;
+  }
+  .editorActionBar {
+    display: flex ;
+    align-items: center ;
+    gap: 8px ;
+    padding: 4px 10px ;
+    border-bottom: 2px solid #ccc ;
+    background: white ;
+    flex-shrink: 0 ;
+  }
+  .editorTabBar {
+    display: flex ;
+    background: #f0f0f0 ;
+    border-bottom: 1px solid #ccc ;
+    flex-shrink: 0 ;
+  }
+  .editorTab {
+    padding: 6px 20px ;
+    cursor: pointer ;
+    font-weight: bold ;
+    font-size: 13px ;
+    border-right: 1px solid #ccc ;
+    color: #555 ;
+    user-select: none ;
+  }
+  .editorTab:hover { background: #e0e0e0 ; }
+  .editorTabActive { background: white ; color: #2060a0 ; border-bottom: 2px solid #2060a0 ; margin-bottom: -1px ; }
+  .editorBreadcrumb {
+    padding: 5px 10px ;
+    font-size: 13px ;
+    color: #555 ;
+    background: #f8f8f8 ;
+    border-bottom: 2px solid #bbb ;
+    flex-shrink: 0 ;
+    display: flex ;
+    align-items: center ;
+    flex-wrap: wrap ;
+    gap: 4px ;
+  }
+  .navToggleBtn {
+    display: none ;
+    background: none ;
+    border: none ;
+    font-size: 20px ;
+    cursor: pointer ;
+    padding: 0 4px ;
+    color: #333 ;
+    flex-shrink: 0 ;
+    align-self: center ;
+    line-height: 1 ;
+  }
+  .bcLink { cursor: pointer ; color: #2060a0 ; }
+  .bcLink:hover { text-decoration: underline ; }
+  .bcSep { color: #555 ; margin: 0 6px ; font-size: 18px ; line-height: 1 ; vertical-align: middle ; }
+  .bcCurrent { color: #333 ; font-weight: bold ; }
+  .editorBody {
+    display: flex ;
+    flex: 1 ;
+    overflow: hidden ;
+    position: relative ;
+  }
+  .editorLeftNav {
+    width: 200px ;
+    min-width: 160px ;
+    overflow-y: auto ;
+    border-right: 1px solid #ccc ;
+    background: #fafafa ;
+    display: flex ;
+    flex-direction: column ;
+    flex-shrink: 0 ;
+  }
+  .navItem {
+    padding: 7px 12px ;
+    cursor: pointer ;
+    font-size: 13px ;
+    color: #333 ;
+    border-bottom: 1px solid #f0f0f0 ;
+    user-select: none ;
+    display: flex ;
+    align-items: center ;
+  }
+  .navItemSelected { background: #dde8f8 ; font-weight: bold ; color: #1a3a6a ; }
+  .navItemArrow { margin-left: auto ; color: #555 ; font-size: 18px ; font-weight: bold ; }
+  /* Count of 0 means the drill-down target is empty — disable the click
+     and gray it out so it doesn't look like a live link to nowhere. */
+  .navItemDisabled { cursor: default ; color: #aaa ; }
+  .navItemDisabled .navItemArrow { color: #ccc ; }
+  .navItemDel { margin-left: 6px ; color: #a00 ; font-size: 11px ; cursor: pointer ; padding: 0 4px ; border-radius: 3px ; flex-shrink: 0 ; }
+  .navItemAdd {
+    padding: 7px 12px ;
+    color: #2060a0 ;
+    cursor: pointer ;
+    font-size: 12px ;
+    font-weight: bold ;
+    border-bottom: 1px solid #e8e8e8 ;
+    user-select: none ;
+  }
+  @media (hover: hover) {
+    .navItem:hover { background: #e8eef8 ; }
+    .navItemSelected:hover { background: #dde8f8 ; }
+    .navItemDisabled:hover { background: transparent ; }
+    .navItemDel:hover { background: #fee ; }
+    .navItemAdd:hover { background: #e8f8e0 ; }
+  }
+  .editorRightPanel {
+    flex: 1 ;
+    overflow-y: auto ;
+    overflow-x: hidden ;
+    padding: 16px 20px ;
+  }
+  .editorHint {
+    color: #888 ;
+    font-style: italic ;
+    text-align: center ;
+    margin-top: 40px ;
+    font-size: 15px ;
+  }
+  .editorFormTitle {
+    font-size: 14px ;
+    font-weight: bold ;
+    color: #333 ;
+    margin-bottom: 14px ;
+    padding-bottom: 6px ;
+    border-bottom: 1px solid #ddd ;
+  }
+  .editorField {
+    display: flex ;
+    align-items: center ;
+    flex-wrap: wrap ;
+    gap: 10px ;
+    margin-bottom: 8px ;
+  }
+  .editorField label {
+    width: 160px ;
+    font-size: 12px ;
+    font-weight: bold ;
+    color: #444 ;
+    text-align: left ;
+    flex-shrink: 0 ;
+  }
+  .editorInput {
+    flex: 1 ;
+    min-width: 120px ;
+    border: 1px solid #ccc ;
+    border-radius: 4px ;
+    padding: 3px 6px ;
+    font-size: 12px ;
+    box-sizing: border-box ;
+    height: 26px ;
+  }
+  .editorInput[type="number"] { height: 26px ; }
+  select.editorInput {
+    height: 26px ;
+    padding: 3px 22px 3px 6px ;
+    margin: 0 ;
+    background-color: white ;
+    color: #333 ;
+    font-weight: normal ;
+    -webkit-appearance: none ;
+    -moz-appearance: none ;
+    appearance: none ;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23222'/%3E%3C/svg%3E") ;
+    background-repeat: no-repeat ;
+    background-position: right 6px center ;
+    background-size: 10px 6px ;
+    cursor: pointer ;
+    width: 100% ;
+  }
+  .editorSelectWrap { flex: 1 ; min-width: 0 ; }
+  textarea.editorInput { height: auto ; }
+  .editorInput:focus { outline: 2px solid #7ab0e0 ; border-color: #7ab0e0 ; }
+  .editorCheckRow {
+    display: flex ;
+    align-items: center ;
+    gap: 6px ;
+    margin-bottom: 6px ;
+    margin-left: 170px ;
+  }
+  .editorCheckRow label { font-size: 12px ; color: #555 ; }
+  .editorSectionLabel {
+    font-size: 12px ;
+    font-weight: bold ;
+    color: #444 ;
+    margin: 14px 0 6px ;
+    padding-bottom: 4px ;
+    border-bottom: 1px solid #e0e0e0 ;
+    display: flex ;
+    align-items: center ;
+  }
+  .editorSectionLabel .editorBtn { margin-left: 10px ; }
+  .boolGrid {
+    display: grid ;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) ;
+    width: 100% ;
+    gap: 6px 10px ;
+    margin-bottom: 8px ;
+  }
+  .boolCell {
+    display: flex ;
+    flex-direction: row ;
+    align-items: center ;
+    gap: 6px ;
+    padding: 4px 6px ;
+    border-radius: 4px ;
+  }
+  .boolCell:nth-child(even) {
+    background: #e9e9e9 ;
+  }
+  .boolCell label {
+    font-size: 11px ;
+    font-weight: bold ;
+    color: #444 ;
+    width: 65px ;
+    flex-shrink: 0 ;
+    white-space: normal ;
+    line-height: 1.3 ;
+  }
+  .boolSeg {
+    display: inline-flex ;
+    border: 1px solid #ccc ;
+    border-radius: 8px ;
+    overflow: hidden ;
+    height: 28px ;
+    flex-shrink: 0 ;
+  }
+  .boolSegBtn {
+    border: none ;
+    padding: 0 4px ;
+    min-width: 34px ;
+    font-size: 12px ;
+    cursor: pointer ;
+    background: #f5f5f5 ;
+    color: #000 ;
+    text-align: center ;
+    display: flex ;
+    align-items: center ;
+    justify-content: center ;
+  }
+  .boolSegBtn:not(:last-child) { border-right: 1px solid #ccc ; }
+  .boolSegBtn.boolSegActive { background: #2060a0 ; color: #fff ; }
+  .boolSegBtn:hover:not(.boolSegActive) { background: #e8e8e8 ; }
+  .editorBtn {
+    border-radius: 8px ;
+    border: 1px solid #2060a0 ;
+    background: #2060a0 ;
+    padding: 3px 12px ;
+    color: white ;
+    cursor: pointer ;
+    font-size: 12px ;
+    font-weight: bold ;
+  }
+  .editorBtn:hover { background: #c4c4c4 ; color: black ; }
+  .editorBtn:disabled { opacity: 0.4 ; cursor: not-allowed ; }
+  .editorBtn:disabled:hover { background: inherit ; color: white ; }
+  .editorBtnSmall { padding: 0 8px ; line-height: 1.4 ; }
+  .editorBtnDanger { background: #a00 ; border-color: #a00 ; }
+  .editorBtnDanger:hover { background: #c4c4c4 ; color: black ; }
+  #dataSavePutBtn, #dataSavePatchBtn { background: #2060a0 ; border-color: #2060a0 ; }
+  #dataSavePutBtn:hover, #dataSavePatchBtn:hover { background: #c4c4c4 ; color: black ; }
+  #dataUndoBtn { background: #a06020 ; border-color: #a06020 ; }
+  #dataUndoBtn:hover { background: #c4c4c4 ; color: black ; }
+  /* Meta tab / non-default-version action bars (buildMetaActionBarHtml(),
+     buildVersionActionBarHtml()) reuse the exact same Save=blue/Undo=brown
+     scheme as the page-level entity editor above — previously missed here,
+     leaving their Undo buttons the plain blue .editorBtn default. */
+  #metaSavePutBtn, #metaSavePatchBtn { background: #2060a0 ; border-color: #2060a0 ; }
+  #metaSavePutBtn:hover, #metaSavePatchBtn:hover { background: #c4c4c4 ; color: black ; }
+  #metaUndoBtn { background: #a06020 ; border-color: #a06020 ; }
+  #metaUndoBtn:hover { background: #c4c4c4 ; color: black ; }
+  #verSavePutBtn, #verSavePatchBtn { background: #2060a0 ; border-color: #2060a0 ; }
+  #verSavePutBtn:hover, #verSavePatchBtn:hover { background: #c4c4c4 ; color: black ; }
+  #verUndoBtn { background: #a06020 ; border-color: #a06020 ; }
+  #verUndoBtn:hover { background: #c4c4c4 ; color: black ; }
+  /* Add-Version create form's Cancel button — same brown "discard in-
+     progress" color as Undo above, for consistency (see plan.md "Add
+     Version reuses the Resource page's own tabs"). */
+  #addVerCancelBtn { background: #a06020 ; border-color: #a06020 ; }
+  #addVerCancelBtn:hover { background: #c4c4c4 ; color: black ; }
+  /* JSON view's raw-edit action bar (Format/Save/Undo/Delete) reuses the
+     exact same Save=blue/Undo=brown scheme as List view's own data-entity
+     editor above, instead of staying the plain green .editorBtn default —
+     Format (no List view equivalent) gets the same light "secondary
+     action" blue used for .eg-link-btn elsewhere in the app. */
+  #jsonEditFormatBtn { background: #eef3fa ; border-color: #b8cce4 ; color: #2060a0 ; }
+  #jsonEditFormatBtn:hover { background: #dce8f8 ; border-color: #7aabdb ; color: #2060a0 ; }
+  #jsonEditPutBtn, #jsonEditPatchBtn { background: #2060a0 ; border-color: #2060a0 ; }
+  #jsonEditPutBtn:hover, #jsonEditPatchBtn:hover { background: #c4c4c4 ; color: black ; }
+  #jsonEditUndoBtn { background: #a06020 ; border-color: #a06020 ; }
+  #jsonEditUndoBtn:hover { background: #c4c4c4 ; color: black ; }
+  .xr-edit-input {
+    border: 1px solid #ccc ;
+    border-radius: 4px ;
+    padding: 2px 6px ;
+    font-size: 13px ;
+    font-family: inherit ;
+    box-sizing: border-box ;
+  }
+  /* Hide the native up/down spinner on number inputs (integer/decimal
+     attributes) — purely cosmetic clutter here since values are typed or
+     pasted, not incremented/decremented one unit at a time. */
+  input.xr-edit-input[type="number"] { -moz-appearance: textfield ; }
+  input.xr-edit-input[type="number"]::-webkit-outer-spin-button,
+  input.xr-edit-input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none ; margin: 0 ;
+  }
+  /* Text/number/select inputs stretch to fill the Value column (the
+     Property table's label column is a fixed 200px — see
+     .xr-table-props above — so the value cell has real room to give).
+     Checkboxes stay their natural small size. */
+  input.xr-edit-input:not([type="checkbox"]),
+  select.xr-edit-input { width: 100% ; }
+  .xr-edit-input:focus { border-color: #2060a0 ; outline: none ; }
+  /* Boolean checkbox edit widget — labels the checkbox with the value it'll
+     produce when checked, since a bare checkbox with no on-screen label
+     gives no hint what "checked" means for a given attribute. */
+  .xr-bool-edit {
+    display: inline-flex ; align-items: center ; gap: 4px ; cursor: pointer ;
+    font-size: 13px ; color: #444 ;
+  }
+  .xr-bool-edit input.xr-edit-input { width: auto ; }
+  /* ---- Complex (map/object/array) attribute editors — Full Data Edit
+     Mode's edit-mode rendering of map/object/array-typed attributes (see
+     renderEditableComplexValue() in app.js). Mirrors the read-only
+     .vt-obj/.vt-arr tree's compact key/value layout, but each row also
+     carries an editable input + a remove button. */
+  .xr-map-editor, .xr-arr-editor, .xr-obj-editor {
+    display: flex ; flex-direction: column ; gap: 4px ;
+  }
+  .xr-map-row, .xr-arr-row, .xr-obj-row {
+    display: flex ; align-items: center ; gap: 6px ;
+  }
+  /* Scalar map/object rows now wrap their key in the same *-row-head
+     column (with its border-right divider) that complex rows already
+     use — for that border to run the value's *full* height (not just
+     the height of the key label) whenever the value stacks a type pill
+     above its input, the row itself must stretch its children instead
+     of centering them (which is otherwise the default for the shared
+     rule above). Array rows already use flex-start (see below) and
+     don't need this. */
+  .xr-map-row, .xr-obj-row {
+    align-items: stretch ;
+  }
+  /* Array rows specifically: top-align (not center) so the [X] remove
+     button sits next to the *start* of its entry field rather than
+     drifting to the vertical middle whenever the value wraps to multiple
+     lines — otherwise it's ambiguous which button belongs to which item.
+     A thin divider between items (including before the "+ Add Item" row,
+     but not after it) keeps consecutive entries from visually blending
+     together. */
+  .xr-arr-row {
+    align-items: flex-start ; padding-bottom: 6px ; margin-bottom: 6px ;
+    border-bottom: 1px solid #e5e5e5 ;
+  }
+  .xr-arr-row.xr-arr-addrow {
+    border-bottom: none ; padding-bottom: 0 ; margin-bottom: 0 ;
+  }
+  .xr-arr-row .vt-arr-idx { padding-top: 5px ; }
+  /* A thin divider between map entries (including before the "+ Add" row,
+     but not after it) — same treatment as array rows above, and matters
+     most once the value is itself complex (a whole sub-editor with
+     several rows), where consecutive entries would otherwise visually
+     blend together with nothing marking where one ends and the next
+     begins. Object rows get the same treatment, for the same reason. */
+  .xr-map-row, .xr-obj-row {
+    padding-bottom: 6px ; margin-bottom: 6px ; border-bottom: 1px solid #e5e5e5 ;
+  }
+  .xr-map-row.xr-map-addrow, .xr-obj-row.xr-obj-addrow {
+    border-bottom: none ; padding-bottom: 0 ; margin-bottom: 0 ;
+  }
+  .xr-map-key, .xr-obj-key {
+    font-weight: bold ; color: #444 ; white-space: nowrap ;
+  }
+  /* Editable map key (see dataEditMapRenameKey() in app.js) — a fixed,
+     modest width (not the general width:100% edit-input rule) so it reads
+     like a label, not a full-width value field. */
+  .xr-map-key .xr-map-key-input { width: 140px ; flex: 0 0 auto ; }
+  .xr-map-val, .xr-arr-val, .xr-obj-val { flex: 1 ; min-width: 0 ; }
+  .xr-map-val .xr-edit-input, .xr-arr-val .xr-edit-input, .xr-obj-val .xr-edit-input,
+  .xr-map-addrow .xr-edit-input { width: 100% ; }
+  /* Complex (map/object/array) *value* nested one level down inside a map
+     entry or array item — placed to the *right* of the key/index (not
+     squeezed inline like a scalar, and not dropped fully below either),
+     top-aligned with the key/index so it doesn't drift down. The
+     key/index and its remove button form their own narrow left-hand
+     column (index on top, remove button directly below it, not beside
+     it) so the button stays visually anchored to what it removes even
+     though the value to its right can be several rows tall. `stretch`
+     (not flex-start) makes both columns match the row's full height, so
+     the divider — a border on the *header* column, not the value — always
+     runs the full height of the row instead of stopping short whenever
+     the value happens to be shorter than the header column. */
+  .xr-map-row-complex, .xr-arr-row-complex, .xr-obj-row-complex {
+    flex-direction: row ; align-items: stretch ; gap: 6px ;
+  }
+  .xr-map-row-head, .xr-arr-row-head, .xr-obj-row-head {
+    display: flex ; flex-direction: row ; align-items: flex-start ; gap: 6px ;
+    flex: 0 0 auto ; padding-right: 10px ; border-right: 2px solid #ddd ;
+  }
+  /* Shared small remove-button treatment for both map entries and array
+     items — the "X" sits directly next to the key/index it belongs to
+     (map: to its left; array: to its right of "[idx]") rather than
+     stacked below or drifting to the far end of the row. Narrower
+     horizontal padding (not a CSS transform/scale, which distorts and
+     blurs the glyph) keeps it visually smaller while its height still
+     matches the adjacent [#]/key label exactly.
+  */
+  .xr-rm-btn-small {
+    padding: 0 4px ;
+  }
+  /* Type pill (typePillHtml() in app.js) — a small faded one-line label
+     shown directly above a value's editor, since the Property/Meta
+     tables have no separate "Type" column. Kept muted/small so it doesn't
+     compete visually with the actual value below it. */
+  .xr-type-pill {
+    display: block ; width: fit-content ; font-size: 10px ; color: #999 ;
+    background: #f4f4f4 ; border-radius: 3px ; padding: 1px 6px ;
+    margin-bottom: 3px ; letter-spacing: 0.2px ;
+  }
+  .xr-map-addrow { gap: 6px ; }
+  /* "+ Add Entry/Item/Key" split button — same two-zone pattern as the
+     filter builder's "+ Add (AND) to" target picker (.fb-and-split): the
+     button itself, plus a compact type <select> overlaid on its right
+     edge, so an "any"-typed item's shape can be chosen right in the
+     button rather than as a separate floating control. Wider than the
+     filter builder's version (37px, just "F1"/"F2") since this shows full
+     type names (e.g. "uinteger", "timestamp"). See
+     renderComplexAddButtonHtml() in app.js. */
+  .xr-add-split {
+    position: relative ; display: inline-flex ; min-width: 190px ;
+  }
+  .xr-add-split-btn {
+    flex: 1 ; text-align: left ; padding-right: 90px ;
+  }
+  .xr-add-split-type {
+    position: absolute ; top: 1px ; right: 1px ; bottom: 1px ; z-index: 2 ;
+    width: 82px ; font-size: 11px ; padding: 0 2px ; cursor: pointer ;
+    border: none ; border-left: 1px solid #ccc ; border-radius: 0 7px 7px 0 ;
+    background: #eef2fa ; color: #2060a0 ;
+  }
+  .xr-map-val-indent {
+    flex: 1 ; min-width: 0 ; padding-left: 4px ;
+  }
+  /* "Items are: <select>" hint control (itemTypeHintSelectorHtml() in
+     app.js) — shown next to a map/array's "+ Add" button whenever its
+     item type is still "any"/undeclared, letting the user lock the
+     container down to a single homogeneous item type going forward.
+     Kept small/muted so it reads as a secondary option, not competing
+     with the primary Add button. */
+  .xr-item-hint {
+    font-size: 11px ; color: #888 ; margin-left: 8px ;
+  }
+  .xr-item-hint-select {
+    font-size: 11px ; padding: 1px 3px ; margin-left: 3px ;
+  }
+  /* Timestamp edit widget (renderTimestampInputHtml() in app.js) — input +
+     "Now" button. Without this, the input's own width:100% rule (above)
+     pushes the button off the visible Value column entirely; flex lets the
+     input shrink to make room instead. */
+  .xr-ts-edit {
+    display: flex ; align-items: center ; gap: 6px ; width: 100% ;
+  }
+  .xr-ts-edit input.xr-edit-input {
+    flex: 1 1 auto ; width: auto ; min-width: 0 ;
+  }
+  .xr-ts-edit .editorBtnSmall { flex: 0 0 auto ; }
+  /* Non-strict enum combo (input + suggestions caret button) — see
+     renderEnumInputHtml()/toggleEnumDropdown()/pickEnumValue() in app.js.
+     Same input+button flex layout as .xr-ts-edit above. The suggestion
+     list itself is a single shared #xr-enum-dropdown-portal element
+     appended directly to <body> and positioned with `position: fixed`
+     (see positionEnumDropdownPortal()) — not anchored under this combo —
+     so it's never clipped by a scrollable/overflow-hidden ancestor (e.g.
+     when the field is near the bottom of the visible Properties table). */
+  .xr-enum-combo {
+    display: flex ; align-items: center ; gap: 6px ; width: 100% ;
+  }
+  .xr-enum-combo input.xr-edit-input {
+    flex: 1 1 auto ; width: auto ; min-width: 0 ;
+  }
+  .xr-enum-caret-btn {
+    flex: 0 0 auto ; font-size: 9px ; padding: 2px 6px ;
+  }
+  .xr-enum-dropdown {
+    background: #fff ; border: 1px solid #ccc ; border-radius: 4px ;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.18) ;
+    max-height: 200px ; overflow-y: auto ; min-width: 140px ;
+  }
+  .xr-enum-dropdown-portal {
+    position: fixed ; z-index: 9999 ;
+  }
+  .xr-enum-dropdown-item {
+    padding: 4px 10px ; cursor: pointer ; font-size: 12px ; white-space: nowrap ;
+  }
+  .xr-enum-dropdown-item:hover { background: #eef4fb ; }
+  .xr-enum-dropdown-item-selected { font-weight: bold ; background: #f5f5f5 ; }
+  #saveBtn { background: #2060a0 ; border-color: #2060a0 ; }
+  #saveBtn:hover { background: #c4c4c4 ; color: black ; }
+  #undoBtn { background: #a06020 ; border-color: #a06020 ; }
+  #undoBtn:hover { background: #c4c4c4 ; color: black ; }
+  /* Capabilities page action bar — same Save=blue/Undo=brown scheme as
+     the other pages above; previously missed here, leaving both buttons
+     the plain blue .editorBtn default. */
+  #capSaveBtn { background: #2060a0 ; border-color: #2060a0 ; }
+  #capSaveBtn:hover { background: #c4c4c4 ; color: black ; }
+  #capUndoBtn { background: #a06020 ; border-color: #a06020 ; }
+  #capUndoBtn:hover { background: #c4c4c4 ; color: black ; }
+  .rmBtn {
+    border-radius: 5px ;
+    border: 1px solid #a00 ;
+    background: #fff ;
+    color: #a00 ;
+    cursor: pointer ;
+    padding: 2px 8px ;
+    font-size: 11px ;
+  }
+  .rmBtn:hover { background: #fee ; }
+  .readOnlyBanner {
+    background: #fff3cd ;
+    border: 1px solid #ffc107 ;
+    border-radius: 6px ;
+    padding: 2px 10px ;
+    font-size: 12px ;
+    font-weight: bold ;
+    color: #856404 ;
+  }
+  #editorError {
+    background: #fee ;
+    border: 1px solid #c00 ;
+    border-radius: 4px ;
+    padding: 8px 12px ;
+    font-size: 12px ;
+    color: #900 ;
+    white-space: pre-wrap ;
+    margin: 0 10px 6px ;
+  }
+  .labelsRows { display: flex ; flex-direction: column ; gap: 4px ; }
+  .labelRow { display: flex ; align-items: center ; gap: 6px ; }
+  .labelKey { width: 120px ; }
+  .labelVal { flex: 1 ; }
+  .constraintBlock { border:1px solid #ddd; border-radius:4px; padding:8px; margin-bottom:8px; background:#fafafa; }
+  .constraintBlockHdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; padding-bottom:6px; border-bottom:1px solid #ddd; }
+  .constraintBlockTitle { font-size:14px; font-weight:700; color:#222; }
+  .cstrPathRow { display:flex; align-items:center; gap:10px; margin-bottom:4px; }
+  .cstrPathRow label { width:160px; flex-shrink:0; font-size:13px; }
+  .cstrPathValue { display:flex; align-items:center; gap:4px; flex:1; }
+  .cstrPathDot { font-weight:bold; padding:0 2px; color:#666; }
+  .cstrResSel, .cstrAttrSel { flex:1; }
+  .cstrEnumSection { margin-top:6px; }
+  .savingOverlay { position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:9999;
+    display:flex; align-items:center; justify-content:center; }
+  .savingBox { background:#fff; border-radius:8px; padding:28px 40px; box-shadow:0 4px 24px rgba(0,0,0,0.3);
+    display:flex; flex-direction:column; align-items:center; gap:16px; font-size:15px; color:#333; }
+  .savingSpinner { width:36px; height:36px; border:4px solid #ddd; border-top-color:#555;
+    border-radius:50%; animation:spin 0.8s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  @media (max-width: 768px) {
+    body { flex-direction: column ; height: 100dvh ; }
+    .navToggleBtn { display: inline-flex ; align-items: center ; }
+    .editorLeftNav {
+      display: none ;
+      position: fixed ;
+      top: 0 ; left: 0 ;
+      width: 80% ; max-width: 280px ;
+      overflow-y: auto ;
+      padding-bottom: env(safe-area-inset-bottom, 0px) ;
+      z-index: 100 ;
+      box-shadow: 4px 0 16px rgba(0,0,0,0.25) ;
+      border-right: 1px solid #ccc ;
+    }
+    .editorLeftNav.navOpen { display: flex ; }
+    .editorActionBar { position: sticky ; top: 0 ; z-index: 10 ; }
+    .editorField { flex-direction: column ; align-items: stretch ; gap: 4px ; }
+    .editorField label { width: auto ; }
+    .editorInput { font-size: 16px ; }
+    .editorBtn { min-height: 36px ; }
+    .boolSeg { height: 18px ; }
+  }
+
+/* ============================================================
+   Capabilities editor (List view for /capabilities)
+   ============================================================ */
+#capEditor { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+#xregEditor { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+.capBody { flex: 1; overflow-y: auto; padding: 16px 20px; }
+.capSection { border: 1px solid #ddd; border-radius: 6px; padding: 12px 16px; margin-bottom: 16px; background: #fafafa; width: fit-content; max-width: 100%; }
+.capSectionTitle { font-size: 13px; font-weight: 600; color: #444; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 10px; }
+.capSectionBody { display: flex; flex-direction: column; gap: 10px; }
+/* No explicit width here (matches .xr-table's now-shrink-to-content
+   behavior) — but .capSectionBody is a flex column, whose default
+   align-items:stretch would otherwise force the table to fill its full
+   width anyway, so align-self:flex-start opts it back out of that
+   stretch. */
+.capTable { border-collapse: collapse; align-self: flex-start; }
+.capTable th { text-align: left; font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.04em; padding: 4px 8px; border-bottom: 1px solid #ddd; }
+.capTable td { padding: 6px 8px; border-bottom: 1px solid #eee; vertical-align: middle; font-size: 13px; }
+.capFieldRow { display: flex; align-items: flex-start; gap: 10px; }
+.capFieldRow > label { width: 160px; flex-shrink: 0; font-size: 13px; color: #333; padding-top: 4px; }
+.capChipWrap { flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.capChips { display: flex; flex-wrap: wrap; gap: 6px; }
+.capChip { display: inline-flex; align-items: center; gap: 4px; background: #eef2f8; border: 1px solid #cfd8e3; border-radius: 12px; padding: 2px 10px; font-size: 12px; color: #333; }
+.capChipRemove { cursor: pointer; color: #888; font-weight: bold; }
+.capChipRemove:hover { color: #c00; }
+.capChipAddRow { display: flex; gap: 6px; }
+.capNone { color: #888; font-size: 12px; font-style: italic; }
+.capObjectBox, .capMapBox { display: flex; flex-direction: column; gap: 6px; border-left: 2px solid #ddd; padding-left: 10px; }
+.capMapRow { display: flex; align-items: center; gap: 8px; }
+.capMapKey { font-family: monospace; font-size: 12px; color: #555; min-width: 100px; }
+.capMapAddRow { display: flex; gap: 6px; margin-top: 4px; }
+.capRawFallback { background: #f4f4f4; border: 1px solid #ddd; border-radius: 4px; padding: 6px 8px; font-size: 11px; margin: 0; white-space: pre-wrap; word-break: break-word; max-width: 100%; }
+/* Capabilities-Offered schema viewer (read-only List view for
+   /capabilitiesoffered) — see renderCapabilitiesOfferedViewer() in app.js. */
+.capSchemaWrap { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.capSchemaType { font-family: monospace; font-size: 12px; color: #555; background: #eef2f8; border: 1px solid #cfd8e3; border-radius: 4px; padding: 2px 8px; align-self: flex-start; }
+
+@media (max-width: 768px) {
+  .capFieldRow { flex-direction: column; align-items: stretch; gap: 4px; }
+  .capFieldRow > label { width: auto; }
+  .capTable, .capTable tbody, .capTable tr, .capTable td { display: block; width: 100%; }
+  .capTable th { display: none; }
+  .capTable tr { margin-bottom: 8px; border-bottom: 1px solid #ddd; padding-bottom: 6px; }
+}
+
+/* Resource/Version page (List view): Document/Details tab bar — replaces
+   the old stacked meta-box + Document-table + Properties-table layout with
+   a small pill tab bar; only one panel is visible at a time. */
+.eg-doc-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.eg-doc-tab {
+  font: inherit; font-size: 13px; font-weight: bold; color: #2060a0; cursor: pointer;
+  background: #eef2fa; border: 1px solid #c8d6ec; border-radius: 12px;
+  padding: 6px 14px;
+}
+.eg-doc-tab:hover { background: #dce4f5; border-color: #a8c0e6; }
+.eg-doc-tab.active { background: #2060a0; color: #fff; border-color: #2060a0; }
+/* Document/Version Details tabs while the "Versions List" tab is active —
+   both are per-version views, but "Versions List" has no single version in
+   context (it shows all of them at once), so they're disabled rather than
+   left clickable-but-meaningless. See syncDocButtonsForTab(). */
+.eg-doc-tab:disabled { color: #999; background: #f3f3f3; border-color: #ddd; cursor: not-allowed; }
+.eg-doc-tab:disabled:hover { background: #f3f3f3; border-color: #ddd; }
+/* JSON view's Details/Document toggle AND "expand all" button all reuse
+   .eg-doc-tab verbatim (see line ~592) but need a smaller/no-wrap
+   footprint to fit the compact sticky header instead of List view's
+   roomier tab-bar layout — kept identical to each other (font/padding/
+   radius) so all three buttons in the header render pixel-for-pixel the
+   same size/shape. */
+.json-doc-toggle.eg-doc-tabs { margin-bottom: 0; flex-wrap: nowrap; gap: 6px; }
+.eg-doc-tab.json-doc-toggle-btn, .eg-doc-tab.json-exp-btn { font-size: 11px; padding: 2px 10px; border-radius: 10px; }
+/* Standalone "Version:" dropdown (Resource page only) — an inline control
+   sitting in the same row as the tab buttons (between the Document tab and
+   the "Version Details" tab it feeds); picking a version doesn't switch
+   tabs, it just changes which version's data feeds the other tabs. */
+.eg-version-selector {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 0 4px;
+}
+.eg-version-selector label { font-size: 13px; font-weight: bold; color: #444; }
+.eg-version-selector select {
+  font: inherit; font-size: 13px; color: #2060a0; font-weight: bold;
+  background: #eef2fa; border: 1px solid #c8d6ec; border-radius: 12px;
+  padding: 6px 14px;
+}
+/* Metadata tab: shown as "N/A" since it has no effect there — greyed out
+   to look disabled, not just unclickable. See plan.md "Metadata tab
+   disables version selector". */
+.eg-version-selector select:disabled {
+  color: #999; background: #eee; border-color: #ddd; cursor: not-allowed;
+}
+/* Experiment: the "Versions List" tab's own button is hidden (see
+   renderSingleEntity()'s tab-button loop) — its panel/logic are otherwise
+   unchanged, reached instead via the "View All" option in the Version:
+   dropdown (see onVersionSelectChange()). The dropdown itself gets this
+   border/glow highlight whenever it shows any real selection (a version,
+   "Default", or "View All") — i.e. every tab except Metadata, whose blank
+   "\u2014 Select \u2014" placeholder has nothing meaningful selected to
+   highlight. See syncVersionSelectorForTab() (kept in sync on every tab
+   switch) and the initial-render seeding in renderSingleEntity().
+   Kept to a border/glow rather than a solid background+white text fill
+   (as .eg-doc-tab.active uses): a <select>'s own background/color also
+   governs its native options popup, and on Linux that popup is often
+   drawn by the OS/GTK theme rather than Blink's own CSS-aware popup — so
+   giving the closed control a solid color made the open list unreadable
+   (solid dark) on at least one such setup, with no CSS override
+   available. Reverting this experiment entirely: delete this rule + the
+   two toggle sites + the tab-hiding class below. */
+.eg-version-selector.eg-tab-active select {
+  border: 2px solid #2060a0; box-shadow: 0 0 0 2px rgba(32, 96, 160, 0.25);
+}
+.eg-doc-tab-hidden { display: none; }
+/* overflow-x: auto scopes the horizontal scrollbar (needed when a
+   Property table's Value column holds long text — see .xr-table-props
+   td:last-child above) to just this tab's content, instead of scrolling
+   the whole page sideways (which #main-view's own overflow: auto would
+   otherwise do). */
+/* padding-top leaves room for focus outlines/box-shadows on content
+   sitting flush against the top edge (e.g. the Content-Type/Format
+   pill inputs) — overflow-x: auto implicitly makes overflow-y: auto
+   too (per CSS spec, since it can't stay "visible" on one axis only),
+   which otherwise clips anything overflowing above the box's top. */
+.eg-doc-tab-panel { margin-bottom: 16px; overflow-x: auto; padding-top: 4px; }
+.eg-doc-textarea {
+  width: 100%; min-height: 200px; overflow: auto;
+  font-family: monospace; font-size: 12px; line-height: 1.4; color: #333;
+  background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 10px;
+  resize: vertical; box-sizing: border-box;
+  /* height is set inline by sizeDocTextarea() to fill the available
+     vertical space down to the "Open in new tab" link, without pushing
+     that link below the visible viewport. */
+}
+/* Shared Document-content widget (buildDocContentWidgetHtml()) — mode
+   selector (Text/Base64/Upload File/External URL) + the input matching
+   the current mode. Used on: create-form Document tab, edit-mode
+   Document tab. */
+.eg-docwidget { margin-top: 4px; }
+.eg-docwidget-modes {
+  display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 10px;
+}
+.eg-docwidget-mode-label {
+  font-size: 13px; font-weight: normal; color: #333; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.eg-docwidget-body { }
+.eg-docwidget-file-info { font-size: 12px; color: #666; margin-top: 6px; }
+.eg-docwidget-file-info-empty { font-style: italic; }
+.eg-docwidget-proxy-label {
+  display: block; font-size: 12px; color: #444; margin-top: 8px;
+  cursor: pointer;
+}
+.eg-doc-preview-actions { margin-top: 8px; }
+.eg-doc-binary-msg { color: #666; font-style: italic; padding: 10px 0; }
+.eg-doc-error-msg { color: #c00; font-family: monospace; font-size: 12px; padding: 10px 0; }
+/* JSON view's raw "postman-style" editor (renderJSONEditView()) — same
+   monospace-textarea look as .eg-doc-textarea above. min-height is just a
+   small floor (matches the JS-computed floor in sizeJsonEditTextarea());
+   the real height is set inline by sizeJsonEditTextarea() to stretch the
+   textarea down to the bottom of the viewport, same idiom as
+   .eg-doc-textarea's sizeDocTextarea(). */
+.json-edit-textarea {
+  width: 100%; min-height: 200px; overflow: auto;
+  font-family: monospace; font-size: 12px; line-height: 1.4; color: #333;
+  background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 10px;
+  resize: vertical; box-sizing: border-box; margin-bottom: 10px;
+}
+/* Suppress the browser's default focus ring (a blue halo) on the JSON
+   textareas — keep the same neutral gray border used unfocused, instead
+   of an unrequested blue outline appearing on click/focus. */
+.json-edit-textarea:focus, .eg-doc-textarea:focus {
+  outline: none; border-color: #ddd;
+}
+/* Document tab's info-pill row (contenttype/format/compatibility) — sits
+   between the tab button row and the document preview; see
+   buildDocInfoPillsHtml(). Empty (no pills) when none of the underlying
+   attributes are set, so no reserved blank space when unused.
+   Content-Type (no validation result) reuses the Labels map's two-tone
+   key/value pill (.eg-label-key/.eg-label-val); Format/Compatibility use
+   the dedicated 3-section pill below instead, per plan.md "pill design
+   consistency". */
+.eg-doc-pills { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 10px; }
+.eg-doc-pill-item { display: inline-flex; align-items: center; gap: 4px; }
+/* Content-Type reuses the shared .eg-label-key/.eg-label-val idiom (see
+   below), but that idiom's default sizing (from the Labels map, where it's
+   used more densely) is a bit smaller than the 3-section pill's — bump it
+   here so all three Document-tab pills read as the same height/row. */
+.eg-doc-pills .eg-label-key,
+.eg-doc-pills .eg-label-val { font-size: 12px; padding: 3px 8px; }
+/* Content-Type/Format become plain <input>s while editing (see
+   docEditableKeyValPillHtml()) — browsers default text inputs to ~20ch,
+   which reads noticeably cramped next to the other read-only pills; bump
+   it 50% wider so typed values (e.g. a full "application/json;
+   charset=utf-8") aren't scrolled out of view. */
+.eg-doc-pill-input { width: 30ch; }
+
+/* 3-section pill — label | value | pass/fail badge — used for Format and
+   Compatibility (docPill3Html()). A single bordered container with
+   contiguous flush segments makes the value->badge association
+   unmistakable, unlike two separately-boxed pills placed side by side. */
+.eg-doc-pill3 {
+  display: inline-flex; align-items: stretch;
+  border: 1px solid #ccd; border-radius: 4px; overflow: hidden;
+  font-size: 12px;
+}
+.eg-doc-pill3-label {
+  display: flex; align-items: center;
+  background: #eef1f8; color: #445; font-weight: bold;
+  padding: 3px 8px; white-space: nowrap;
+}
+.eg-doc-pill3-value {
+  display: flex; align-items: center;
+  background: #fff; color: #333;
+  padding: 3px 8px; border-left: 1px solid #ccd; white-space: nowrap;
+}
+.eg-doc-pill3-badge {
+  display: flex; align-items: center;
+  font-weight: bold; padding: 3px 8px; border-left: 1px solid #ccd;
+}
+.eg-doc-pill3-ok { background: #e6f4ea; color: #1e7e34; }
+/* validated === false doesn't mean something is wrong — it just means the
+   server hasn't checked (or the check didn't pass strictly enough to say
+   "ok") — so this is neutral gray, matching .eg-bool-false's palette,
+   not a red "failure" color. Still clickable (when a reason is given) to
+   see why, hence the pointer cursor + hover shade. */
+.eg-doc-pill3-fail { background: #eee; color: #666; cursor: pointer; }
+.eg-doc-pill3-fail:hover { background: #e2e2e2; }
