@@ -21,8 +21,8 @@ jobs:
     permissions:
       id-token: write # Required for OIDC authentication
       contents: write # Required to push changes back
-      statuses: write # Required to report status for the commit on repo page
       pages: write    # Required to update github pages
+      statuses: write # Required to report status for the commit on repo page
 
     steps:
       - name: Checkout repository
@@ -32,6 +32,7 @@ jobs:
         run: ./mksite
 
       - name: Commit and push changes
+        id: git_check
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@://github.com"
