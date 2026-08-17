@@ -17,3 +17,6 @@ rm -rf site
 mkdir site
 cp tmp-server/registry/ui/*.* site/
 cp overlay-site/* site/
+GIT_COMMIT=$(git rev-list -1 HEAD)
+GIT_COMMIT=${GIT_COMMIT:0:12}
+sed -i "s/COMMIT/$GIT_COMMIT/g" site/xrui.json
