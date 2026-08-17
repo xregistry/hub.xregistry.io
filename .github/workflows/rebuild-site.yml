@@ -1,0 +1,37 @@
+name: Regen the hub.xreg.io site
+
+on:
+  repository_dispatch:
+    type: [server_updated]
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  update_site:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to push changes back
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run local script
+        run: ./mkdocs
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@://github.com"
+
+          git add .
+
+          # Only commit if there are actual changes to prevent workflow failure
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "chore: automated update via remote trigger"
+            git push
+          else
+            echo "No changes detected. Skipping push."
+          fi
