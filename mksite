@@ -5,6 +5,7 @@ set -ex
 # Clone the xRegistry server repo since it has the UI files
 rm -rf tmp-server
 git clone --depth 1 https://github.com/xregistry/server.git tmp-server
+trap "rm -rf tmp-server" EXIT
 
 # Generate specattrsjs, that's needed by the UI
 cd tmp-server
@@ -12,10 +13,7 @@ make .sharedfiles registry/ui/specattrs.js
 cd ..
 
 # Erase old files, copy new UI files from 'server' repo and overlay our config
-rm -rf docs
-mkdir docs
-cp tmp-server/registry/ui/*.* docs/
-cp overlay-docs/* docs/
-
-# Cleanup
-rm -rf tmp-server
+rm -rf site
+mkdir site
+cp tmp-server/registry/ui/*.* site/
+cp overlay-site/* site/

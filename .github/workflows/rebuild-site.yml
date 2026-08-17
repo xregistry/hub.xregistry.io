@@ -8,18 +8,28 @@ on:
     branches:
       - main
 
+concurrency:
+  group: regen-site
+  cancel-in-progress: false   # Force serialization of regen requests
+
 jobs:
-  update_site:
+  build:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     permissions:
+      id-token: write # Required for OIDC authentication
       contents: write # Required to push changes back
+      statuses: write # Required to report status for the commit on repo page
+      pages: write    # Required to update github pages
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run local script
-        run: ./mkdocs
+      - name: Build the site
+        run: ./mksite
 
       - name: Commit and push changes
         run: |
@@ -30,8 +40,19 @@ jobs:
 
           # Only commit if there are actual changes to prevent workflow failure
           if [ -n "$(git status --porcelain)" ]; then
-            git commit -m "chore: automated update via remote trigger"
+            git commit -m "Automated rebuild of site"
             git push
           else
             echo "No changes detected. Skipping push."
+            echo "skip=true" >> $GITHUB_OUTPUT
           fi
+
+      - name: Upload artifact
+        if: steps.git_check.outputs.skip != 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './site'
+
+      - name: Deploy site
+        if: steps.git_check.outputs.skip != 'true'
+        uses: actions/deploy-pages@v4
