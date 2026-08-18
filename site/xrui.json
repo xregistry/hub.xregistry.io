@@ -2,6 +2,6 @@
   "servers": [ "https://api.xregistry.io" ],
   "title": "xRegistry Hub",
   "summary": "A collection of public xRegistry registries. See [xRegistry.io](http://xregistry.io) for more infomration about xRegistry. To add new items, open an issue at [xRegistry Hub](https://github.com/xregistry/hub.xregistry.io/issues).",
-  "footer": "Version: 6436175c7f69",
+  "footer": "Version: 9a7df82c2fa4",
   "footerAlign": "right"
 }
