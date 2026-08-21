@@ -1,0 +1,224 @@
+{
+  "specversion": "1.0-rc4",
+  "registryid": "xrHub",
+  "self": "#/",
+  "xid": "/",
+  "epoch": 6,
+  "createdat": "2000-01-01T12:00:00.00Z",
+  "modifiedat": "2000-01-01T12:00:00.00Z",
+  "capabilities": {
+    "available": {
+      ".xregistry": {
+        "mutable": false
+      },
+      "capabilities": {
+        "mutable": true
+      },
+      "capabilitiesoffered": {
+        "mutable": false
+      },
+      "entities": {
+        "mutable": true
+      },
+      "export": {
+        "mutable": false
+      },
+      "model": {
+        "mutable": false
+      },
+      "modelsource": {
+        "mutable": true
+      }
+    },
+    "compatibilities": {
+      "avro*": [
+        "backward",
+        "backward_transitive",
+        "forward",
+        "forward_transitive",
+        "full",
+        "full_transitive"
+      ],
+      "jsonschema*": [
+        "backward",
+        "backward_transitive",
+        "forward",
+        "forward_transitive",
+        "full",
+        "full_transitive"
+      ],
+      "jsonstructure*": [
+        "backward",
+        "backward_transitive",
+        "forward",
+        "forward_transitive",
+        "full",
+        "full_transitive"
+      ],
+      "numbers": [
+        "backward",
+        "backward_transitive",
+        "forward",
+        "forward_transitive",
+        "full",
+        "full_transitive"
+      ],
+      "protobuf*": [
+        "backward",
+        "backward_transitive",
+        "forward",
+        "forward_transitive",
+        "full",
+        "full_transitive"
+      ],
+      "xmlschema*": [
+        "backward",
+        "backward_transitive",
+        "forward",
+        "forward_transitive",
+        "full",
+        "full_transitive"
+      ]
+    },
+    "flags": [
+      "binary",
+      "collections",
+      "doc",
+      "epoch",
+      "filter",
+      "ignore",
+      "inline",
+      "setdefaultversionid",
+      "sort",
+      "specversion"
+    ],
+    "formats": [
+      "avro*",
+      "jsonschema*",
+      "jsonstructure*",
+      "numbers",
+      "protobuf*",
+      "xmlschema*"
+    ],
+    "ignores": [
+      "capabilities",
+      "defaultversionid",
+      "defaultversionsticky",
+      "epoch",
+      "id",
+      "modelsource",
+      "readonly"
+    ],
+    "pagination": false,
+    "shortself": false,
+    "specversions": [
+      "1.0-rc4"
+    ],
+    "versionmodes": [
+      "createdat",
+      "manual"
+    ]
+  },
+  "modelsource": {
+    "groups": {
+      "categories": {
+        "resources": {
+          "registries": {
+            "attributes": {
+              "registryurl": {
+                "required": true,
+                "type": "url"
+              }
+            },
+            "hasdocument": false,
+            "singular": "registry"
+          }
+        },
+        "singular": "category"
+      }
+    }
+  },
+  "categoriesurl": "#/categories",
+  "categories": {
+    "ai": {
+      "categoryid": "ai",
+      "self": "#/categories/ai",
+      "xid": "/categories/ai",
+      "epoch": 1,
+      "createdat": "2000-01-01T12:00:00.00Z",
+      "modifiedat": "2000-01-01T12:00:00.00Z",
+      "registriesurl": "#/categories/ai/registries",
+      "registries": {},
+      "registriescount": 0
+    },
+    "dev": {
+      "categoryid": "dev",
+      "self": "#/categories/dev",
+      "xid": "/categories/dev",
+      "epoch": 1,
+      "createdat": "2000-01-01T12:00:00.00Z",
+      "modifiedat": "2000-01-01T12:00:00.00Z",
+      "registriesurl": "#/categories/dev/registries",
+      "registries": {},
+      "registriescount": 0
+    },
+    "mcp": {
+      "categoryid": "mcp",
+      "self": "#/categories/mcp",
+      "xid": "/categories/mcp",
+      "epoch": 1,
+      "createdat": "2000-01-01T12:00:00.00Z",
+      "modifiedat": "2000-01-01T12:00:00.00Z",
+      "registriesurl": "#/categories/mcp/registries",
+      "registries": {},
+      "registriescount": 0
+    },
+    "oci": {
+      "categoryid": "oci",
+      "self": "#/categories/oci",
+      "xid": "/categories/oci",
+      "epoch": 1,
+      "createdat": "2000-01-01T12:00:00.00Z",
+      "modifiedat": "2000-01-01T12:00:00.00Z",
+      "registriesurl": "#/categories/oci/registries",
+      "registries": {
+        "dockerhub": {
+          "registryid": "dockerhub",
+          "self": "#/categories/oci/registries/dockerhub",
+          "xid": "/categories/oci/registries/dockerhub",
+          "metaurl": "#/categories/oci/registries/dockerhub/meta",
+          "meta": {
+            "registryid": "dockerhub",
+            "self": "#/categories/oci/registries/dockerhub/meta",
+            "xid": "/categories/oci/registries/dockerhub/meta",
+            "epoch": 1,
+            "createdat": "2000-01-01T12:00:00.00Z",
+            "modifiedat": "2000-01-01T12:00:00.00Z",
+            "readonly": false,
+            "defaultversionid": "1",
+            "defaultversionurl": "#/categories/oci/registries/dockerhub/versions/1",
+            "defaultversionsticky": false
+          },
+          "versionsurl": "#/categories/oci/registries/dockerhub/versions",
+          "versions": {
+            "1": {
+              "registryid": "dockerhub",
+              "versionid": "1",
+              "self": "#/categories/oci/registries/dockerhub/versions/1",
+              "xid": "/categories/oci/registries/dockerhub/versions/1",
+              "epoch": 1,
+              "isdefault": true,
+              "createdat": "2000-01-01T12:00:00.00Z",
+              "modifiedat": "2000-01-01T12:00:00.00Z",
+              "ancestorid": "1",
+              "registryurl": "https://hub.docker.com"
+            }
+          },
+          "versionscount": 1
+        }
+      },
+      "registriescount": 1
+    }
+  },
+  "categoriescount": 4
+}

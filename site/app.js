@@ -35,28 +35,206 @@
 var DEFAULT_SERVER_ORIGIN = window.location.origin;
 
 // Relative path (resolved against wherever index.html/app.js are served
-// from) of the optional JSON config file used to override
-// DEFAULT_SERVER_ORIGIN — see loadUIConfig(). A missing file (404) or any
-// fetch/parse error is treated as "no override" and silently ignored;
-// this file is entirely optional.
+// from) of the optional JSON config file used to customize the UI — see
+// loadUIConfig(). A missing file (404) or any fetch/parse error is
+// treated as "no customization" and silently ignored; this file is
+// entirely optional. Recognized top-level fields:
+//   servers      - array of registry root URLs (strings), in display
+//                  order, used to seed the Home page's server list the
+//                  FIRST time the UI runs in a given browser — see
+//                  loadUIConfig(). Renamed/replaces the old singular
+//                  `defaultServer` string override. When provided, the
+//                  UI's own hosting origin ("this server") is NOT
+//                  auto-added unless it's explicitly included in this
+//                  list.
+//   headerHTML   - relative/absolute URL to an HTML fragment fetched
+//                  once at startup and inserted on Home, below the
+//                  header's button bar and above the registries
+//                  (grid or list). Mutually exclusive with title/summary
+//                  — see loadUIHeaderConfig().
+//   title        - plain string shown (bold, centered) in place of
+//                  headerHTML when headerHTML isn't set.
+//   summary      - plain string (may contain [text](url) markdown
+//                  links — see mdLinksToHtml()) shown below `title`,
+//                  centered, when headerHTML isn't set.
+//   footerHTML   - like headerHTML, but fetched/inserted at the bottom
+//                  of Home, below the registries. Mutually exclusive
+//                  with `footer` — see loadUIFooterConfig().
+//   footer       - plain string (markdown links honored) shown in place
+//                  of footerHTML when footerHTML isn't set.
+//   footerAlign  - 'left' | 'center' | 'right' (default 'right'):
+//                  text-alignment for `footer`/footerHTML's container.
+//
+// In `title`/`summary`/`footer` and the fetched headerHTML/footerHTML
+// bodies, every literal "$COMMIT" is replaced with the first 12 chars of
+// XREG_UI_COMMIT (the UI build's commit hash, defined in specattrs.js) —
+// see replaceCommitPlaceholder().
+//
+// xrui.json may also contain full-line `//` comments (a line that, after
+// stripping leading whitespace, starts with "//") — see
+// stripJsonCommentLines(). This is the only deviation from standard JSON
+// it supports.
 var UI_CONFIG_FILE = 'xrui.json';
 
-// Fetches UI_CONFIG_FILE (if present) and, if it has a non-empty
-// `defaultServer` string, uses it to override DEFAULT_SERVER_ORIGIN
-// (normalized the same way every other server URL is — see
-// normalizeURL()) before the rest of the app boots — see init(). Always
-// resolves (never rejects), so a missing/invalid config file can never
-// block startup; it just means DEFAULT_SERVER_ORIGIN keeps its
-// window.location.origin fallback.
+// Resolved header/footer customization from xrui.json — populated by
+// loadUIConfig() before the app first renders (see init()). null means
+// "nothing configured for this slot"; otherwise one of:
+//   {type: 'error', message}         — invalid/conflicting config
+//   {type: 'html',  html[, align]}   — fetched headerHTML/footerHTML body
+//   {type: 'text',  title, summary}  — header text fields
+//   {type: 'text',  footer, align}   — footer text field
+// Rendered on Home via uiHeaderBlockHTML()/uiFooterBlockHTML() — see
+// injectHomeHeaderFooter().
+var _uiHeaderConfig = null;
+var _uiFooterConfig = null;
+
+// Fetches UI_CONFIG_FILE (if present) and applies it — seeding the
+// initial `servers` list (see below) and resolving _uiHeaderConfig/
+// _uiFooterConfig (including any headerHTML/footerHTML fetches) — before
+// the rest of the app boots (see init()). Always resolves (never
+// rejects), so a missing/invalid config file, or a missing/failed
+// headerHTML/footerHTML fetch, can never block startup.
+// Top-level xrui.json fields recognized by loadUIConfig() — anything
+// else present is very likely a typo (e.g. "title2", "footerAligns") or
+// a field from a different/future version of this file, so it's flagged
+// via console.warn() rather than silently ignored — see loadUIConfig().
+// The file/fields are otherwise entirely optional, so an unrecognized
+// field is a warning, not an error; it never blocks startup.
+var UI_CONFIG_KNOWN_KEYS = ['servers', 'headerHTML', 'title', 'summary', 'footerHTML', 'footer', 'footerAlign'];
+
+// Strips full-line `//` comments from xrui.json's raw text before
+// JSON.parse() — a line is a comment (and replaced with a blank line, to
+// keep line numbers accurate for any JSON.parse() error) only if,
+// ignoring leading whitespace, it starts with "//"; a trailing/inline
+// "//" elsewhere on an otherwise-real JSON line is left alone (so it's
+// never mistaken for a comment inside a string value). This is the only
+// non-standard-JSON leniency xrui.json supports — see loadUIConfig().
+function stripJsonCommentLines(text) {
+  return text.split(/\r\n|\r|\n/).map(function(line) {
+    return /^\s*\/\//.test(line) ? '' : line;
+  }).join('\n');
+}
+
 function loadUIConfig() {
   return fetch(UI_CONFIG_FILE, {cache: 'no-store'})
-    .then(function(resp) { return resp.ok ? resp.json() : null; })
-    .then(function(cfg) {
-      if (cfg && typeof cfg.defaultServer === 'string' && cfg.defaultServer.trim()) {
-        DEFAULT_SERVER_ORIGIN = normalizeURL(cfg.defaultServer.trim());
+    .then(function(resp) { return resp.ok ? resp.text() : null; })
+    .then(function(text) {
+      if (text == null) return;
+      var cfg = JSON.parse(stripJsonCommentLines(text));
+      if (!cfg || typeof cfg !== 'object') return;
+
+      Object.keys(cfg).forEach(function(k) {
+        if (UI_CONFIG_KNOWN_KEYS.indexOf(k) === -1) {
+          console.warn(UI_CONFIG_FILE + ': unrecognized field "' + k + '" — ignored. Known fields: ' + UI_CONFIG_KNOWN_KEYS.join(', ') + '.');
+        }
+      });
+
+      // `servers` — ordered list of registry root URLs used to seed the
+      // Home page's server list the FIRST time the UI runs in a given
+      // browser (i.e. only while LS_SERVERS is still empty). Once the
+      // user has added/removed/reordered servers themselves (via the
+      // Config page), xrui.json is no longer consulted for this, so it
+      // can never fight with the user's own changes on a later reload.
+      // "This server" (DEFAULT_SERVER_ORIGIN) is always implicit and is
+      // skipped here so it's never duplicated into LS_SERVERS.
+      if (Array.isArray(cfg.servers) && loadServers().length === 0) {
+        var origin = normalizeURL(DEFAULT_SERVER_ORIGIN);
+        var includesOrigin = false;
+        cfg.servers.forEach(function(u) {
+          if (typeof u !== 'string' || !u.trim()) return;
+          var norm = normalizeURL(u.trim());
+          if (!norm) return;
+          if (norm === origin) { includesOrigin = true; return; }
+          addServer(norm);
+        });
+        // The site owner gave us an explicit list — if it doesn't
+        // include the UI's own hosting origin ("this server"), don't let
+        // it auto-appear anyway; hide it via the same "delete this
+        // server" flag the Config page's manual toggle uses (see
+        // isLocalServerDeleted()/allKnownServerUrls()). Only applied on
+        // this first-run seed (same `loadServers().length === 0` guard
+        // as above), so it never fights with a later manual Config-page
+        // choice to re-add/remove "this server".
+        if (!includesOrigin) setLocalServerDeleted(true);
       }
+
+      return Promise.all([loadUIHeaderConfig(cfg), loadUIFooterConfig(cfg)]);
     })
-    .catch(function() { /* no config file, or invalid JSON — ignore */ });
+    .catch(function(err) {
+      // A missing file (resp.ok false, above) resolves to `cfg === null`
+      // and never reaches here — this only fires for a genuine problem
+      // (the file exists but isn't valid JSON, or the fetch itself
+      // failed, e.g. a network/CORS error) — surfaced to the console so
+      // a broken xrui.json isn't silently mistaken for "no file", while
+      // still never blocking startup.
+      console.warn(UI_CONFIG_FILE + ': failed to load or parse — ignoring.', err);
+    });
+}
+
+// Resolves _uiHeaderConfig from the parsed xrui.json — see UI_CONFIG_FILE
+// comment above for field semantics. `headerHTML` and `title`/`summary`
+// are mutually exclusive; specifying both is a configuration error that's
+// surfaced on Home (via uiHeaderBlockHTML()) instead of silently
+// preferring one.
+// Replaces every literal "$COMMIT" occurrence in an xrui.json text field
+// (title/summary/footer) or fetched headerHTML/footerHTML body with the
+// UI build's commit hash (XREG_UI_COMMIT, defined in specattrs.js, loaded
+// before app.js — see index.html) — lets a hosted xrui.json reference
+// exactly which UI build it's talking about (e.g. in a footer/version
+// note) without hard-coding it.
+function replaceCommitPlaceholder(s) {
+  if (s == null) return s;
+  var commit = (typeof XREG_UI_COMMIT === 'string') ? XREG_UI_COMMIT.slice(0, 12) : '';
+  return String(s).split('$COMMIT').join(commit);
+}
+
+function loadUIHeaderConfig(cfg) {
+  var hasHTML    = typeof cfg.headerHTML === 'string' && cfg.headerHTML.trim();
+  var hasTitle   = typeof cfg.title === 'string' && cfg.title.trim();
+  var hasSummary = typeof cfg.summary === 'string' && cfg.summary.trim();
+  if (hasHTML && (hasTitle || hasSummary)) {
+    _uiHeaderConfig = {type: 'error', message: 'xrui.json: "headerHTML" cannot be combined with "title"/"summary" — remove one or the other.'};
+    return;
+  }
+  if (hasHTML) {
+    return fetch(cfg.headerHTML.trim(), {cache: 'no-store'})
+      .then(function(resp) { return resp.ok ? resp.text() : Promise.reject(); })
+      .then(function(html) { _uiHeaderConfig = {type: 'html', html: replaceCommitPlaceholder(html)}; })
+      .catch(function() {
+        _uiHeaderConfig = {type: 'error', message: 'xrui.json: failed to load "headerHTML" from "' + cfg.headerHTML + '".'};
+      });
+  }
+  if (hasTitle || hasSummary) {
+    _uiHeaderConfig = {
+      type: 'text',
+      title:   hasTitle   ? replaceCommitPlaceholder(cfg.title.trim())   : '',
+      summary: hasSummary ? replaceCommitPlaceholder(cfg.summary.trim()) : '',
+    };
+  }
+}
+
+// Resolves _uiFooterConfig from the parsed xrui.json — mirror of
+// loadUIHeaderConfig() above, plus `footerAlign` (defaults to 'right'
+// when missing/invalid).
+function loadUIFooterConfig(cfg) {
+  var hasHTML   = typeof cfg.footerHTML === 'string' && cfg.footerHTML.trim();
+  var hasFooter = typeof cfg.footer === 'string' && cfg.footer.trim();
+  var align = ['left', 'center', 'right'].indexOf(cfg.footerAlign) !== -1 ? cfg.footerAlign : 'right';
+  if (hasHTML && hasFooter) {
+    _uiFooterConfig = {type: 'error', message: 'xrui.json: "footerHTML" cannot be combined with "footer" — remove one or the other.'};
+    return;
+  }
+  if (hasHTML) {
+    return fetch(cfg.footerHTML.trim(), {cache: 'no-store'})
+      .then(function(resp) { return resp.ok ? resp.text() : Promise.reject(); })
+      .then(function(html) { _uiFooterConfig = {type: 'html', html: replaceCommitPlaceholder(html), align: align}; })
+      .catch(function() {
+        _uiFooterConfig = {type: 'error', message: 'xrui.json: failed to load "footerHTML" from "' + cfg.footerHTML + '".'};
+      });
+  }
+  if (hasFooter) {
+    _uiFooterConfig = {type: 'text', footer: replaceCommitPlaceholder(cfg.footer.trim()), align: align};
+  }
 }
 
 var _state = {
@@ -2175,6 +2353,19 @@ function setDataView(v) {
   // changed.
   renderHeader();
 
+  // The sibling-switcher panel + its toggle icon (#sibling-panel /
+  // #sibling-toggle-fixed) aren't part of renderHeader() — they depend on
+  // getSiblingContext(), which returns null whenever _state.dataView ===
+  // 'json' (already updated above). Without this, switching into/out of
+  // JSON view left the icon (and, if it was open, the panel itself)
+  // showing their stale pre-switch state until the next full refresh()/
+  // pushState() cycle (e.g. a manual page reload) — mirrors the same
+  // trio of calls refresh() makes at the end of a full render.
+  var sibApplicableDV = _state.view !== 'json' && _state.dataView !== 'json';
+  setSiblingPanelVisible(sibApplicableDV && _siblingPanelOpen);
+  if (sibApplicableDV) renderSiblingPanel();
+  updateSiblingToggleBtn();
+
   if (_state.view === 'home') {
     renderHome();
     return;
@@ -3307,6 +3498,7 @@ function renderHome() {
       + '<p>Go to <a href="#" onclick="setView(\'config\');return false;">Config</a>'
       + ' to add one.</p>'
       + '</div></div>';
+    injectHomeHeaderFooter(main);
     return;
   }
   if (g === 'types') {
@@ -3314,6 +3506,7 @@ function renderHome() {
   } else {
     l === 'table' ? renderHomeTable(main, allServers, favorites.length) : renderHomeGrid(main, allServers, favorites.length);
   }
+  injectHomeHeaderFooter(main);
 }
 
 // Manual global "Refresh" button (see #home-refresh-btn/renderHeader()) —
@@ -15605,7 +15798,7 @@ function saveAttrFrom(attrsObj, origKey) {
   if (ncs && ncsEl && !ncsEl.disabled) attr.namecharset = ncs ;
   var enm = collectEnum('ef_enum') ;
   if (enm.length) attr.enum = enm ;
-  ['required','readonly','immutable','matchcase','matchversions','strict'].forEach(function(f) {
+  ['required','readonly','immutable','matchversions','strict'].forEach(function(f) {
     var v = fvBool('ef_'+f) ;
     if (v === true) attr[f] = true ;
     else if (v === false) attr[f] = false ;
@@ -15859,7 +16052,6 @@ function renderAttrForm(div, attr) {
   div.appendChild(optSec) ;
   var optList = [
     ['immutable',  'Immutable',  attr.immutable],
-    ['matchcase',  'Match Case', attr.matchcase],
     ['readonly',   'Read Only',  attr.readonly],
     ['required',   'Required',   attr.required],
     ['strict',     'Strict',     attr.strict]
@@ -17414,6 +17606,82 @@ function esc(s) {
   if (s == null) return '';
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
                   .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// Converts `[text](url)` markdown-style links found in a plain-text
+// string (e.g. xrui.json's `summary`/`footer` fields) into real <a>
+// anchors, HTML-escaping everything else (including the link text/URL
+// themselves) so the rest of the string can never inject markup — used
+// wherever xrui.json's text fields are rendered; see
+// uiHeaderBlockHTML()/uiFooterBlockHTML().
+function mdLinksToHtml(s) {
+  if (s == null) return '';
+  var text = String(s);
+  // Any scheme is allowed EXCEPT an explicit non-safelisted one (e.g.
+  // "javascript:") — relative URLs (no scheme at all) and http(s)/
+  // mailto/tel are all fine. A link using a disallowed scheme is left
+  // as literal (escaped) text rather than turned into a clickable link.
+  var SAFE_SCHEME = /^(https?:|mailto:|tel:)/i;
+  var HAS_SCHEME  = /^[a-z][a-z0-9+.-]*:/i;
+  var re = /\[([^\]]+)\]\(([^\s)]+)\)/g;
+  var out = '', lastIndex = 0, m;
+  while ((m = re.exec(text))) {
+    out += esc(text.slice(lastIndex, m.index));
+    var url = m[2];
+    if (SAFE_SCHEME.test(url) || !HAS_SCHEME.test(url)) {
+      out += '<a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">' + esc(m[1]) + '</a>';
+    } else {
+      out += esc(m[0]);
+    }
+    lastIndex = re.lastIndex;
+  }
+  out += esc(text.slice(lastIndex));
+  return out;
+}
+
+// Builds the optional xrui.json-driven block shown on Home, below the
+// header's button bar and above the registries (grid or list) — see
+// _uiHeaderConfig/loadUIHeaderConfig(). Returns '' when nothing is
+// configured.
+function uiHeaderBlockHTML() {
+  var cfg = _uiHeaderConfig;
+  if (!cfg) return '';
+  if (cfg.type === 'error') return '<div class="home-config-block home-config-error">' + esc(cfg.message) + '</div>';
+  if (cfg.type === 'html')  return '<div class="home-config-block home-header-html">' + cfg.html + '</div>';
+  var out = '<div class="home-config-block home-header-text">';
+  if (cfg.title)   out += '<div class="home-header-title">' + esc(cfg.title) + '</div>';
+  if (cfg.summary) out += '<div class="home-header-summary">' + mdLinksToHtml(cfg.summary) + '</div>';
+  return out + '</div>';
+}
+
+// Mirror of uiHeaderBlockHTML() for the bottom-of-Home block — see
+// _uiFooterConfig/loadUIFooterConfig(). Returns '' when nothing is
+// configured.
+function uiFooterBlockHTML() {
+  var cfg = _uiFooterConfig;
+  if (!cfg) return '';
+  // home-page-footer is a plain marker (see .home-page-footer in
+  // style.css) that pins whichever variant renders (error/html/text) to
+  // the bottom of the Home page via margin-top:auto, even when the
+  // registry list is too short to fill the viewport.
+  if (cfg.type === 'error') return '<div class="home-config-block home-page-footer home-config-error">' + esc(cfg.message) + '</div>';
+  var alignClass = 'home-footer-align-' + (cfg.align || 'center');
+  if (cfg.type === 'html') return '<div class="home-config-block home-page-footer home-footer-html ' + alignClass + '">' + cfg.html + '</div>';
+  return '<div class="home-config-block home-page-footer home-footer-text ' + alignClass + '">' + mdLinksToHtml(cfg.footer) + '</div>';
+}
+
+// Inserts the resolved header/footer blocks (see above) as the first/last
+// children of `main`'s `.home-page` container — called after every Home
+// render (empty-state, grid, table, and the "types" flat list) so
+// headerHTML/title/summary and footerHTML/footer show consistently
+// regardless of layout — see renderHome().
+function injectHomeHeaderFooter(main) {
+  var page = main.querySelector('.home-page');
+  if (!page) return;
+  var header = uiHeaderBlockHTML();
+  var footer = uiFooterBlockHTML();
+  if (header) page.insertAdjacentHTML('afterbegin', header);
+  if (footer) page.insertAdjacentHTML('beforeend', footer);
 }
 
 // Close inline error popups when clicking outside them

@@ -1,0 +1,167 @@
+{
+  "capabilities": {
+    "available": {
+      "capabilities": {
+        "mutable": false
+      },
+      "capabilitiesoffered": {
+        "mutable": false
+      },
+      "entities": {
+        "mutable": false
+      },
+      "export": {
+        "mutable": false
+      },
+      "model": {
+        "mutable": false
+      },
+      "modelsource": {
+        "mutable": false
+      }
+    },
+    "compatibilities": {
+      "avro*": [
+        "backward",
+        "backward_transitive",
+        "forward",
+        "forward_transitive",
+        "full",
+        "full_transitive"
+      ],
+      "jsonschema*": [
+        "backward",
+        "backward_transitive",
+        "forward",
+        "forward_transitive",
+        "full",
+        "full_transitive"
+      ],
+      "jsonstructure*": [
+        "backward",
+        "backward_transitive",
+        "forward",
+        "forward_transitive",
+        "full",
+        "full_transitive"
+      ],
+      "numbers": [
+        "backward",
+        "backward_transitive",
+        "forward",
+        "forward_transitive",
+        "full",
+        "full_transitive"
+      ],
+      "protobuf*": [
+        "backward",
+        "backward_transitive",
+        "forward",
+        "forward_transitive",
+        "full",
+        "full_transitive"
+      ],
+      "xmlschema*": [
+        "backward",
+        "backward_transitive",
+        "forward",
+        "forward_transitive",
+        "full",
+        "full_transitive"
+      ]
+    },
+    "flags": null,
+    "formats": [
+      "avro*",
+      "jsonschema*",
+      "jsonstructure*",
+      "numbers",
+      "protobuf*",
+      "xmlschema*"
+    ],
+    "ignores": [
+      "capabilities",
+      "defaultversionid",
+      "defaultversionsticky",
+      "epoch",
+      "id",
+      "modelsource",
+      "readonly"
+    ],
+    "pagination": false,
+    "shortself": false,
+    "specversions": [
+      "1.0-rc4"
+    ],
+    "versionmodes": [
+      "createdat",
+      "manual"
+    ]
+  },
+  "categories": {
+    "ai": {
+      "categoryid": "ai",
+      "createdat": "2000-01-01T12:00:00.00Z",
+      "modifiedat": "2000-01-01T12:00:00.00Z",
+      "registries": {}
+    },
+    "dev": {
+      "categoryid": "dev",
+      "createdat": "2000-01-01T12:00:00.00Z",
+      "modifiedat": "2000-01-01T12:00:00.00Z",
+      "registries": {}
+    },
+    "mcp": {
+      "categoryid": "mcp",
+      "createdat": "2000-01-01T12:00:00.00Z",
+      "modifiedat": "2000-01-01T12:00:00.00Z",
+      "registries": {}
+    },
+    "oci": {
+      "categoryid": "oci",
+      "createdat": "2000-01-01T12:00:00.00Z",
+      "modifiedat": "2000-01-01T12:00:00.00Z",
+      "registries": {
+        "dockerhub": {
+          "meta": {
+            "createdat": "2000-01-01T12:00:00.00Z",
+            "defaultversionid": "1",
+            "defaultversionsticky": false,
+            "modifiedat": "2000-01-01T12:00:00.00Z",
+            "readonly": false
+          },
+          "versions": {
+            "1": {
+              "ancestorid": "1",
+              "createdat": "2000-01-01T12:00:00.00Z",
+              "modifiedat": "2000-01-01T12:00:00.00Z",
+              "registryurl": "https://hub.docker.com"
+            }
+          }
+        }
+      }
+    }
+  },
+  "createdat": "2000-01-01T12:00:00.00Z",
+  "modelsource": {
+    "groups": {
+      "categories": {
+        "resources": {
+          "registries": {
+            "attributes": {
+              "registryurl": {
+                "required": true,
+                "type": "url"
+              }
+            },
+            "hasdocument": false,
+            "singular": "registry"
+          }
+        },
+        "singular": "category"
+      }
+    }
+  },
+  "modifiedat": "2000-01-01T12:00:00.00Z",
+  "specversion": "1.0-rc4"
+}

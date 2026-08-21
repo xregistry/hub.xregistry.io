@@ -1,4 +1,4 @@
-name: Regen the hub.xreg.io site
+name: Regen the hub.xreg.io site & registry
 
 on:
   repository_dispatch:

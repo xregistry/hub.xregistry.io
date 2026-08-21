@@ -1,0 +1,19 @@
+{
+  "groups": {
+    "categories": {
+      "resources": {
+        "registries": {
+          "attributes": {
+            "registryurl": {
+              "required": true,
+              "type": "url"
+            }
+          },
+          "hasdocument": false,
+          "singular": "registry"
+        }
+      },
+      "singular": "category"
+    }
+  }
+}

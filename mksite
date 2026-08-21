@@ -1,22 +1,95 @@
 #!/bin/bash
 
 set -ex
+shopt -s expand_aliases
+
+export TMP=${RUNNER_TEMP:-/tmp}
+
+function clean() {
+    rm -rf tmp-server
+    rm -rf $TMP/tmp-xr
+    docker rm -f xrserver
+}
+
+trap clean EXIT
+
+# Build the Hub (user-friendly) web part first
+##############################################
 
 # Clone the xRegistry server repo since it has the UI files
 rm -rf tmp-server
 git clone --depth 1 https://github.com/xregistry/server.git tmp-server
-trap "rm -rf tmp-server" EXIT
 
 # Generate specattrsjs, that's needed by the UI
 cd tmp-server
 make .sharedfiles registry/ui/specattrs.js
 cd ..
 
-# Erase old files, copy new UI files from 'server' repo and overlay our config
+# Erase old site
 rm -rf site
-mkdir site
+mkdir -p site/xreg
+
+# Copy new UI files from 'server' repo and overlay our config
 cp tmp-server/registry/ui/*.* site/
 cp overlay-site/* site/
-GIT_COMMIT=$(git rev-list -1 HEAD)
-GIT_COMMIT=${GIT_COMMIT:0:12}
-sed -i "s/COMMIT/$GIT_COMMIT/g" site/xrui.json
+
+# Now build the xreg files (available under /xreg)
+##################################################
+
+export XR_IMAGE=ghcr.io/xregistry/xr
+export XRSERVER_IMAGE=ghcr.io/xregistry/xrserver-all
+export XR_SERVER=http://localhost:8383
+
+echo "# Download 'xr' CLI"
+container_id=$(docker create $XR_IMAGE)
+docker cp $container_id:/xr "$TMP/tmp-xr"
+docker rm -f $container_id
+chmod +x "$TMP/tmp-xr"
+alias xr=$TMP/tmp-xr
+
+echo "# Starting xreg server, and waiting for it to be ready"
+docker rm -f xrserver > /dev/null 2>&1 || true
+docker run -qdti --pull always --name xrserver -p 8383:8080 $XRSERVER_IMAGE \
+    -r xrHub >/dev/null
+set +x
+echo -n "# Waiting for server."
+while ! curl --silent --fail $XR_SERVER > /dev/null;do echo -n . && sleep 2;done
+set -x
+
+echo "# Defining the model"
+xr model update -d '{
+  "groups": {
+    "categories": {
+      "singular": "category",
+      "resources": {
+        "registries": {
+          "singular": "registry",
+          "hasdocument": false,
+          "attributes": {
+            "registryurl": {
+              "type": "url",
+              "required": true
+            }
+          }
+        }
+      }
+    }
+  }
+}'
+
+echo "# Uploading the data"
+export T="2000-01-01T12:00:00.00Z"
+#export SETTIMES=" --set createdat=$T --set modifiedat=$T"
+
+xr create categories/ai $SETTIMES
+xr create categories/dev $SETTIMES
+xr create categories/mcp $SETTIMES
+xr create categories/oci/registries/dockerhub \
+    --set registryurl=https://hub.docker.com $SETTIMES
+
+echo "# Downloading the site files from the registry"
+xr download -c -m --import --nodiff=* \
+    -u https://hub.xregistry.io/xreg site/xreg/
+
+TS_REGEX="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]*)Z"
+xr get /export | sed -E "s/$TS_REGEX/$T/g" > api.xreg

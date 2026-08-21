@@ -1,7 +1,7 @@
 {
-  "servers": [ "https://api.xregistry.io" ],
+  "servers": [ "https://hub.xregistry.io/xreg", "https://xregistry.io/xreg" ],
   "title": "xRegistry Hub",
   "summary": "A collection of public xRegistry registries. See [xRegistry.io](http://xregistry.io) for more infomration about xRegistry. To add new items, open an issue at [xRegistry Hub](https://github.com/xregistry/hub.xregistry.io/issues).",
-  "footer": "Version: COMMIT",
+  "footer": "Version: $COMMIT",
   "footerAlign": "right"
 }
