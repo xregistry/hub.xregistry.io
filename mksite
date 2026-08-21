@@ -20,10 +20,10 @@ trap clean EXIT
 # Clone the xRegistry server repo since it has the UI files
 rm -rf tmp-server
 git clone --depth 1 https://github.com/xregistry/server.git tmp-server
-(cd tmp-server && git rev-list -1 HEAD)
 
 # Generate specattrsjs, that's needed by the UI
 cd tmp-server
+git rev-list -1 HEAD
 make .sharedfiles registry/ui/specattrs.js
 cd ..
 
@@ -35,9 +35,11 @@ mkdir -p site/xreg
 cp tmp-server/registry/ui/*.* site/
 cp overlay-site/* site/
 
-GIT_COMMIT=$(git rev-list -1 HEAD)
-GIT_COMMIT=${GIT_COMMIT:0:12}
-sed -i "s/\$HUBCOMMIT/$GIT_COMMIT/g" site/xrui.json
+if [[ "$GITHUB_ACTIONS" == "true" ]]; then
+    GIT_COMMIT=$(git rev-list -1 HEAD)
+    GIT_COMMIT=${GIT_COMMIT:0:12}
+    sed -i "s/\$HUBCOMMIT/$GIT_COMMIT/g" site/xrui.json
+fi
 
 # Now build the xreg files (available under /xreg)
 ##################################################
