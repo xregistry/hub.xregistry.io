@@ -6,9 +6,10 @@ shopt -s expand_aliases
 export TMP=${RUNNER_TEMP:-/tmp}
 
 function clean() {
-    rm -rf tmp-server || true
-    rm -rf $TMP/tmp-xr || true
-    docker rm -f xrserver || true
+    set +e
+    rm -rf tmp-server
+    rm -rf $TMP/tmp-xr
+    docker rm -f xrserver
 }
 
 trap clean EXIT
@@ -19,7 +20,7 @@ trap clean EXIT
 # Clone the xRegistry server repo since it has the UI files
 rm -rf tmp-server
 git clone --depth 1 https://github.com/xregistry/server.git tmp-server
-git rev-list -1 HEAD
+(cd tmp-server && git rev-list -1 HEAD)
 
 # Generate specattrsjs, that's needed by the UI
 cd tmp-server
@@ -54,7 +55,7 @@ alias xr=$TMP/tmp-xr
 
 echo "# Starting xreg server, and waiting for it to be ready"
 docker rm -f xrserver > /dev/null 2>&1 || true
-docker run -qti --pull always --rm $XRSERVER_IMAGE --version
+docker run -q --pull always --rm $XRSERVER_IMAGE --version
 docker run -qdti --name xrserver -p 8383:8080 $XRSERVER_IMAGE \
     -r xrHub > /dev/null
 set +x
