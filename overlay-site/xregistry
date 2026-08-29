@@ -1,0 +1,6 @@
+{
+  "registries": [
+    "https://xregistry.soaphub.org",
+    "https://xregistry-pkg-registries-prod.redbeach-4fd4df68.westeurope.azurecontainerapps.io/registry"
+  ]
+}

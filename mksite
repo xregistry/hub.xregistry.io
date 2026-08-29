@@ -34,10 +34,11 @@ mkdir -p site/xreg
 # Copy new UI files from 'server' repo and overlay our config
 cp tmp-server/registry/ui/*.* site/
 cp overlay-site/* site/
+mv site/xregistry site/xreg/.xregistry
 
 if [[ "$GITHUB_ACTIONS" == "true" ]]; then
     GIT_COMMIT=$(git rev-list -1 HEAD)
-    GIT_COMMIT=${GIT_COMMIT:0:12}
+    GIT_COMMIT=${GIT_COMMIT:0:4}
     sed -i "s/\$HUBCOMMIT/$GIT_COMMIT/g" site/xrui.json
 fi
 
