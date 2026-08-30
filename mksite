@@ -60,7 +60,7 @@ echo "# Starting xreg server, and waiting for it to be ready"
 docker rm -f xrserver > /dev/null 2>&1 || true
 docker run -q --pull always --rm $XRSERVER_IMAGE --version
 docker run -qdti --name xrserver -p 8383:8080 $XRSERVER_IMAGE \
-    -r "xRegistryHub" > /dev/null
+    -r "xRegistryHub" --rootapp=xreg > /dev/null
 set +x
 echo -n "# Waiting for server."
 while ! curl --silent --fail $XR_SERVER > /dev/null;do echo -n . && sleep 2;done
