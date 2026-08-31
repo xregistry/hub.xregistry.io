@@ -76,9 +76,11 @@ xr model update -d '{
           "singular": "registry",
           "hasdocument": false,
           "attributes": {
-            "registryurl": {
-              "type": "url",
-              "required": true
+            "xregurl": {
+              "type": "url"
+            },
+            "weburl": {
+              "type": "url"
             }
           }
         }
@@ -94,8 +96,11 @@ export T="2000-01-01T12:00:00.00Z"
 xr create categories/ai $SETTIMES
 xr create categories/dev $SETTIMES
 xr create categories/mcp $SETTIMES
+
+xr create categories/dev/registries/xreg-bridge \
+    --set xregurl=https://xregistry-pkg-registries-prod.redbeach-4fd4df68.westeurope.azurecontainerapps.io/registry $SETTIMES
 xr create categories/oci/registries/dockerhub \
-    --set registryurl=https://hub.docker.com $SETTIMES
+    --set weburl=https://hub.docker.com $SETTIMES
 
 echo "# Downloading the site files from the registry"
 xr download -c -m --import --nodiff=* \
