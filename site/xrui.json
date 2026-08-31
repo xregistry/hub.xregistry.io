@@ -2,6 +2,6 @@
   "servers": [ "https://hub.xregistry.io/xreg", "https://xregistry.io/xreg" ],
   "title": "xRegistryHub",
   "summary": "A collection of public [xRegistries](http://xregistry.io). To register new xRegistries, open an [issue](https://github.com/xregistry/hub.xregistry.io/issues).<br>Use the 'Config' menu to add new xRegistries to your browser.",
-  "footer": "Version: cfac-$COMMIT",
+  "footer": "Version: 682d-$COMMIT",
   "footerAlign": "right"
 }
