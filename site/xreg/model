@@ -402,10 +402,13 @@
               "type": "string",
               "readonly": true
             },
-            "registryurl": {
-              "name": "registryurl",
-              "type": "url",
-              "required": true
+            "weburl": {
+              "name": "weburl",
+              "type": "url"
+            },
+            "xregurl": {
+              "name": "xregurl",
+              "type": "url"
             }
           },
           "resourceattributes": {

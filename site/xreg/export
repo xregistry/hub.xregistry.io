@@ -115,8 +115,43 @@
       "createdat": "2000-01-01T12:00:00.00Z",
       "epoch": 1,
       "modifiedat": "2000-01-01T12:00:00.00Z",
-      "registries": {},
-      "registriescount": 0,
+      "registries": {
+        "xreg-bridge": {
+          "meta": {
+            "createdat": "2000-01-01T12:00:00.00Z",
+            "defaultversionid": "1",
+            "defaultversionsticky": false,
+            "defaultversionurl": "#/categories/dev/registries/xreg-bridge/versions/1",
+            "epoch": 1,
+            "modifiedat": "2000-01-01T12:00:00.00Z",
+            "readonly": false,
+            "registryid": "xreg-bridge",
+            "self": "#/categories/dev/registries/xreg-bridge/meta",
+            "xid": "/categories/dev/registries/xreg-bridge/meta"
+          },
+          "metaurl": "#/categories/dev/registries/xreg-bridge/meta",
+          "registryid": "xreg-bridge",
+          "self": "#/categories/dev/registries/xreg-bridge",
+          "versions": {
+            "1": {
+              "ancestorid": "1",
+              "createdat": "2000-01-01T12:00:00.00Z",
+              "epoch": 1,
+              "isdefault": true,
+              "modifiedat": "2000-01-01T12:00:00.00Z",
+              "registryid": "xreg-bridge",
+              "self": "#/categories/dev/registries/xreg-bridge/versions/1",
+              "versionid": "1",
+              "xid": "/categories/dev/registries/xreg-bridge/versions/1",
+              "xregurl": "https://xregistry-pkg-registries-prod.redbeach-4fd4df68.westeurope.azurecontainerapps.io/registry"
+            }
+          },
+          "versionscount": 1,
+          "versionsurl": "#/categories/dev/registries/xreg-bridge/versions",
+          "xid": "/categories/dev/registries/xreg-bridge"
+        }
+      },
+      "registriescount": 1,
       "registriesurl": "#/categories/dev/registries",
       "self": "#/categories/dev",
       "xid": "/categories/dev"
@@ -162,9 +197,9 @@
               "isdefault": true,
               "modifiedat": "2000-01-01T12:00:00.00Z",
               "registryid": "dockerhub",
-              "registryurl": "https://hub.docker.com",
               "self": "#/categories/oci/registries/dockerhub/versions/1",
               "versionid": "1",
+              "weburl": "https://hub.docker.com",
               "xid": "/categories/oci/registries/dockerhub/versions/1"
             }
           },
@@ -189,8 +224,10 @@
         "resources": {
           "registries": {
             "attributes": {
-              "registryurl": {
-                "required": true,
+              "weburl": {
+                "type": "url"
+              },
+              "xregurl": {
                 "type": "url"
               }
             },

@@ -125,8 +125,10 @@
         "resources": {
           "registries": {
             "attributes": {
-              "registryurl": {
-                "required": true,
+              "weburl": {
+                "type": "url"
+              },
+              "xregurl": {
                 "type": "url"
               }
             },
@@ -155,12 +157,47 @@
       "categoryid": "dev",
       "self": "#/categories/dev",
       "xid": "/categories/dev",
-      "epoch": 1,
+      "epoch": 2,
       "createdat": "2000-01-01T12:00:00.00Z",
       "modifiedat": "2000-01-01T12:00:00.00Z",
       "registriesurl": "#/categories/dev/registries",
-      "registries": {},
-      "registriescount": 0
+      "registries": {
+        "xreg-bridge": {
+          "registryid": "xreg-bridge",
+          "self": "#/categories/dev/registries/xreg-bridge",
+          "xid": "/categories/dev/registries/xreg-bridge",
+          "metaurl": "#/categories/dev/registries/xreg-bridge/meta",
+          "meta": {
+            "registryid": "xreg-bridge",
+            "self": "#/categories/dev/registries/xreg-bridge/meta",
+            "xid": "/categories/dev/registries/xreg-bridge/meta",
+            "epoch": 1,
+            "createdat": "2000-01-01T12:00:00.00Z",
+            "modifiedat": "2000-01-01T12:00:00.00Z",
+            "readonly": false,
+            "defaultversionid": "1",
+            "defaultversionurl": "#/categories/dev/registries/xreg-bridge/versions/1",
+            "defaultversionsticky": false
+          },
+          "versionsurl": "#/categories/dev/registries/xreg-bridge/versions",
+          "versions": {
+            "1": {
+              "registryid": "xreg-bridge",
+              "versionid": "1",
+              "self": "#/categories/dev/registries/xreg-bridge/versions/1",
+              "xid": "/categories/dev/registries/xreg-bridge/versions/1",
+              "epoch": 1,
+              "isdefault": true,
+              "createdat": "2000-01-01T12:00:00.00Z",
+              "modifiedat": "2000-01-01T12:00:00.00Z",
+              "ancestorid": "1",
+              "xregurl": "https://xregistry-pkg-registries-prod.redbeach-4fd4df68.westeurope.azurecontainerapps.io/registry"
+            }
+          },
+          "versionscount": 1
+        }
+      },
+      "registriescount": 1
     },
     "mcp": {
       "categoryid": "mcp",
@@ -211,7 +248,7 @@
               "createdat": "2000-01-01T12:00:00.00Z",
               "modifiedat": "2000-01-01T12:00:00.00Z",
               "ancestorid": "1",
-              "registryurl": "https://hub.docker.com"
+              "weburl": "https://hub.docker.com"
             }
           },
           "versionscount": 1

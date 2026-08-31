@@ -4,8 +4,10 @@
       "resources": {
         "registries": {
           "attributes": {
-            "registryurl": {
-              "required": true,
+            "weburl": {
+              "type": "url"
+            },
+            "xregurl": {
               "type": "url"
             }
           },
