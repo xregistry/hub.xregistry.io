@@ -58,7 +58,7 @@ jobs:
 
       - name: Deploy site
         if: steps.git_check.outputs.skip != 'true'
-        uses: actions/deploy-pages@vl4
+        uses: actions/deploy-pages@v4
 
   status:
     name: regen-status
