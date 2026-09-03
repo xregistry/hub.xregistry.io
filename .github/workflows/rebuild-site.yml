@@ -7,13 +7,15 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'site/**'
 
 concurrency:
   group: regen-site
   cancel-in-progress: false   # Force serialization of regen requests
 
 jobs:
-  build:
+  update-repo:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -56,4 +58,17 @@ jobs:
 
       - name: Deploy site
         if: steps.git_check.outputs.skip != 'true'
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@vl4
+
+  status:
+    name: regen-status
+    runs-on: ubuntu-latest
+    needs: [update-repo]
+    if: ${{ always() }}
+    steps:
+      - run: |
+          if [ "${{ needs.update-repo.result }}" != "success" ]; then
+            echo "regen failed"
+            exit 1
+          fi
+          echo "regen succeeded"
