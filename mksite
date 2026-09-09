@@ -103,7 +103,7 @@ xr create categories/oci/registries/dockerhub \
     --set weburl=https://hub.docker.com $SETTIMES
 
 echo "# Downloading the site files from the registry"
-xr download -c -m --import --nodiff=* \
+xr download -c --md2html --all --import --nodiff=* \
     -u https://hub.xregistry.io/xreg site/xreg/
 
 TS_REGEX="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]*)Z"
