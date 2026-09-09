@@ -1,3 +1,12 @@
 {
-  "defaultversionid": "1"
+  "createdat": "2000-01-01T12:00:00.00Z",
+  "defaultversionid": "1",
+  "defaultversionsticky": false,
+  "defaultversionurl": "https://hub.xregistry.io/xreg/categories/oci/registries/dockerhub/versions/1",
+  "epoch": 1,
+  "modifiedat": "2000-01-01T12:00:00.00Z",
+  "readonly": false,
+  "registryid": "dockerhub",
+  "self": "https://hub.xregistry.io/xreg/categories/oci/registries/dockerhub/meta",
+  "xid": "/categories/oci/registries/dockerhub/meta"
 }
