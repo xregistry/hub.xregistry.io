@@ -115,9 +115,9 @@
   "categories": {
     "ai": {
       "categoryid": "ai",
-      "createdat": "2026-09-10T02:06:32.7975781Z",
+      "createdat": "2026-09-10T03:26:41.897507028Z",
       "epoch": 1,
-      "modifiedat": "2026-09-10T02:06:32.7975781Z",
+      "modifiedat": "2026-09-10T03:26:41.897507028Z",
       "registries": {},
       "registriescount": 0,
       "registriesurl": "#/categories/ai/registries",
@@ -126,18 +126,18 @@
     },
     "dev": {
       "categoryid": "dev",
-      "createdat": "2026-09-10T02:06:32.818015567Z",
+      "createdat": "2026-09-10T03:26:41.926574543Z",
       "epoch": 2,
-      "modifiedat": "2026-09-10T02:06:32.863336549Z",
+      "modifiedat": "2026-09-10T03:26:41.987231444Z",
       "registries": {
         "xreg-bridge": {
           "meta": {
-            "createdat": "2026-09-10T02:06:32.863336549Z",
+            "createdat": "2026-09-10T03:26:41.987231444Z",
             "defaultversionid": "1",
             "defaultversionsticky": false,
             "defaultversionurl": "#/categories/dev/registries/xreg-bridge/versions/1",
             "epoch": 1,
-            "modifiedat": "2026-09-10T02:06:32.863336549Z",
+            "modifiedat": "2026-09-10T03:26:41.987231444Z",
             "readonly": false,
             "registryid": "xreg-bridge",
             "self": "#/categories/dev/registries/xreg-bridge/meta",
@@ -149,10 +149,10 @@
           "versions": {
             "1": {
               "ancestorid": "1",
-              "createdat": "2026-09-10T02:06:32.863336549Z",
+              "createdat": "2026-09-10T03:26:41.987231444Z",
               "epoch": 1,
               "isdefault": true,
-              "modifiedat": "2026-09-10T02:06:32.863336549Z",
+              "modifiedat": "2026-09-10T03:26:41.987231444Z",
               "registryid": "xreg-bridge",
               "self": "#/categories/dev/registries/xreg-bridge/versions/1",
               "versionid": "1",
@@ -172,9 +172,9 @@
     },
     "mcp": {
       "categoryid": "mcp",
-      "createdat": "2026-09-10T02:06:32.839742731Z",
+      "createdat": "2026-09-10T03:26:41.957650295Z",
       "epoch": 1,
-      "modifiedat": "2026-09-10T02:06:32.839742731Z",
+      "modifiedat": "2026-09-10T03:26:41.957650295Z",
       "registries": {},
       "registriescount": 0,
       "registriesurl": "#/categories/mcp/registries",
@@ -183,18 +183,18 @@
     },
     "oci": {
       "categoryid": "oci",
-      "createdat": "2026-09-10T02:06:32.898721955Z",
+      "createdat": "2026-09-10T03:26:42.042415307Z",
       "epoch": 1,
-      "modifiedat": "2026-09-10T02:06:32.898721955Z",
+      "modifiedat": "2026-09-10T03:26:42.042415307Z",
       "registries": {
         "dockerhub": {
           "meta": {
-            "createdat": "2026-09-10T02:06:32.898721955Z",
+            "createdat": "2026-09-10T03:26:42.042415307Z",
             "defaultversionid": "1",
             "defaultversionsticky": false,
             "defaultversionurl": "#/categories/oci/registries/dockerhub/versions/1",
             "epoch": 1,
-            "modifiedat": "2026-09-10T02:06:32.898721955Z",
+            "modifiedat": "2026-09-10T03:26:42.042415307Z",
             "readonly": false,
             "registryid": "dockerhub",
             "self": "#/categories/oci/registries/dockerhub/meta",
@@ -206,10 +206,10 @@
           "versions": {
             "1": {
               "ancestorid": "1",
-              "createdat": "2026-09-10T02:06:32.898721955Z",
+              "createdat": "2026-09-10T03:26:42.042415307Z",
               "epoch": 1,
               "isdefault": true,
-              "modifiedat": "2026-09-10T02:06:32.898721955Z",
+              "modifiedat": "2026-09-10T03:26:42.042415307Z",
               "registryid": "dockerhub",
               "self": "#/categories/oci/registries/dockerhub/versions/1",
               "versionid": "1",
@@ -228,7 +228,7 @@
       "xid": "/categories/oci"
     }
   },
-  "createdat": "2026-09-10T02:06:30.904803087Z",
+  "createdat": "2026-09-10T03:26:40.029058687Z",
   "modelsource": {
     "groups": {
       "categories": {
@@ -250,6 +250,6 @@
       }
     }
   },
-  "modifiedat": "2026-09-10T02:06:32.898721955Z",
+  "modifiedat": "2026-09-10T03:26:42.042415307Z",
   "specversion": "1.0-rc4"
 }
