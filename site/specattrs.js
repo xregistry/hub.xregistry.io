@@ -2,7 +2,7 @@
 // Source: common/shared_entity  |  Regenerate: make .sharedfiles
 // Generator: cmds/genspecattrs/main.go
 //
-var XREG_UI_COMMIT = "5854af0130db7723bad489f16ba66536126b823a";
+var XREG_UI_COMMIT = "ab9f2bcfb8e58d7e7b01c46ccf08476871e9c2a1";
 
 // Spec-defined attributes per entity level.
 // Extensions: attrs NOT in this set, NOT <singular>id, NOT collection keys.
@@ -66,4 +66,28 @@ var SPEC_ATTRS_ORDER = {
   resource: ["id", "self", "shortself", "xid", "metaurl", "meta"],
   meta:     ["id", "self", "shortself", "xid", "xref", "epoch", "labels", "createdat", "modifiedat", "readonly", "compatibility", "deprecated", "defaultversionid", "defaultversionurl", "defaultversionsticky"],
   version:  ["id", "versionid", "self", "shortself", "xid", "epoch", "name", "isdefault", "description", "documentation", "icon", "labels", "createdat", "modifiedat", "ancestorid", "contenttype", "format", "formatvalidated", "formatvalidatedreason", "compatibilityvalidated", "compatibilityvalidatedreason"]
+};
+
+// Full canonical attribute order per entity level, INCLUDING the
+// structural '$space' (blank-line separator) and '$extensions'
+// (alphabetized-extension insertion point) markers from
+// registry.OrderedSpecProps, in declaration order. Unlike
+// SPEC_ATTRS_ORDER above (which drops '$'-prefixed entries — it's
+// only used for UI column ordering), this preserves them so a
+// canonical-order JSON pretty-printer can reproduce the spec's
+// pseudo-JSON layout (see core/spec.md "Design: JSON Serialization").
+// '$RESOURCE*'/'$COLLECTIONS' placeholder tokens are kept verbatim —
+// a consumer without the real model can't resolve them to real
+// attribute names, so it should just skip over them as no-ops.
+// Consecutive '$space' entries (which can end up adjacent after
+// per-level filtering removes everything between two of them) are
+// already collapsed to one here, and no leading/trailing '$space'
+// survives — so a consumer can treat every remaining '$space' as
+// exactly one blank line to emit.
+var SPEC_ATTRS_CANONICAL_ORDER = {
+  registry: ["specversion", "registryid", "self", "shortself", "xid", "epoch", "name", "description", "documentation", "icon", "labels", "createdat", "modifiedat", "$extensions", "capabilities", "model", "modelsource", "$space", "$COLLECTIONS"],
+  group:    ["id", "self", "shortself", "xid", "epoch", "name", "description", "documentation", "icon", "labels", "createdat", "modifiedat", "deprecated", "constraints", "$extensions", "$space", "$COLLECTIONS"],
+  resource: ["id", "versionid", "self", "shortself", "xid", "epoch", "name", "isdefault", "description", "documentation", "icon", "labels", "createdat", "modifiedat", "ancestorid", "contenttype", "format", "formatvalidated", "formatvalidatedreason", "compatibilityvalidated", "compatibilityvalidatedreason", "$extensions", "$space", "$RESOURCEurl", "$RESOURCEproxyurl", "$RESOURCE", "$RESOURCEbase64", "$space", "metaurl", "meta", "$space", "$COLLECTIONS"],
+  meta:     ["id", "self", "shortself", "xid", "xref", "epoch", "labels", "createdat", "modifiedat", "readonly", "compatibility", "deprecated", "$extensions", "$space", "defaultversionid", "defaultversionurl", "defaultversionsticky"],
+  version:  ["id", "versionid", "self", "shortself", "xid", "epoch", "name", "isdefault", "description", "documentation", "icon", "labels", "createdat", "modifiedat", "ancestorid", "contenttype", "format", "formatvalidated", "formatvalidatedreason", "compatibilityvalidated", "compatibilityvalidatedreason", "$extensions", "$space", "$RESOURCEurl", "$RESOURCEproxyurl", "$RESOURCE", "$RESOURCEbase64"]
 };
