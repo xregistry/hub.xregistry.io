@@ -1,7 +1,7 @@
 {
   "specversion": "1.0-rc4",
-  "createdat": "2026-09-11T19:58:12.357105128Z",
-  "modifiedat": "2026-09-11T19:58:14.354378747Z",
+  "createdat": "2026-09-12T01:40:18.585846272Z",
+  "modifiedat": "2026-09-12T01:40:19.576836009Z",
   "capabilities": {
     "available": {
       ".xregistry": {
@@ -143,8 +143,8 @@
       "self": "#/categories/ai",
       "xid": "/categories/ai",
       "epoch": 1,
-      "createdat": "2026-09-11T19:58:14.261233977Z",
-      "modifiedat": "2026-09-11T19:58:14.261233977Z",
+      "createdat": "2026-09-12T01:40:19.492391343Z",
+      "modifiedat": "2026-09-12T01:40:19.492391343Z",
 
       "registriesurl": "#/categories/ai/registries",
       "registriescount": 0,
@@ -155,8 +155,8 @@
       "self": "#/categories/dev",
       "xid": "/categories/dev",
       "epoch": 2,
-      "createdat": "2026-09-11T19:58:14.281080762Z",
-      "modifiedat": "2026-09-11T19:58:14.321945761Z",
+      "createdat": "2026-09-12T01:40:19.509913501Z",
+      "modifiedat": "2026-09-12T01:40:19.547154472Z",
 
       "registriesurl": "#/categories/dev/registries",
       "registriescount": 1,
@@ -172,8 +172,8 @@
             "self": "#/categories/dev/registries/xreg-bridge/meta",
             "xid": "/categories/dev/registries/xreg-bridge/meta",
             "epoch": 1,
-            "createdat": "2026-09-11T19:58:14.321945761Z",
-            "modifiedat": "2026-09-11T19:58:14.321945761Z",
+            "createdat": "2026-09-12T01:40:19.547154472Z",
+            "modifiedat": "2026-09-12T01:40:19.547154472Z",
             "readonly": false,
 
             "defaultversionid": "1",
@@ -191,8 +191,8 @@
               "xid": "/categories/dev/registries/xreg-bridge/versions/1",
               "epoch": 1,
               "isdefault": true,
-              "createdat": "2026-09-11T19:58:14.321945761Z",
-              "modifiedat": "2026-09-11T19:58:14.321945761Z",
+              "createdat": "2026-09-12T01:40:19.547154472Z",
+              "modifiedat": "2026-09-12T01:40:19.547154472Z",
               "ancestorid": "1",
               "xregurl": "https://xregistry-pkg-registries-prod.redbeach-4fd4df68.westeurope.azurecontainerapps.io/registry"
             }
@@ -205,8 +205,8 @@
       "self": "#/categories/mcp",
       "xid": "/categories/mcp",
       "epoch": 1,
-      "createdat": "2026-09-11T19:58:14.300926049Z",
-      "modifiedat": "2026-09-11T19:58:14.300926049Z",
+      "createdat": "2026-09-12T01:40:19.526983305Z",
+      "modifiedat": "2026-09-12T01:40:19.526983305Z",
 
       "registriesurl": "#/categories/mcp/registries",
       "registriescount": 0,
@@ -217,8 +217,8 @@
       "self": "#/categories/oci",
       "xid": "/categories/oci",
       "epoch": 1,
-      "createdat": "2026-09-11T19:58:14.354378747Z",
-      "modifiedat": "2026-09-11T19:58:14.354378747Z",
+      "createdat": "2026-09-12T01:40:19.576836009Z",
+      "modifiedat": "2026-09-12T01:40:19.576836009Z",
 
       "registriesurl": "#/categories/oci/registries",
       "registriescount": 1,
@@ -234,8 +234,8 @@
             "self": "#/categories/oci/registries/dockerhub/meta",
             "xid": "/categories/oci/registries/dockerhub/meta",
             "epoch": 1,
-            "createdat": "2026-09-11T19:58:14.354378747Z",
-            "modifiedat": "2026-09-11T19:58:14.354378747Z",
+            "createdat": "2026-09-12T01:40:19.576836009Z",
+            "modifiedat": "2026-09-12T01:40:19.576836009Z",
             "readonly": false,
 
             "defaultversionid": "1",
@@ -253,8 +253,8 @@
               "xid": "/categories/oci/registries/dockerhub/versions/1",
               "epoch": 1,
               "isdefault": true,
-              "createdat": "2026-09-11T19:58:14.354378747Z",
-              "modifiedat": "2026-09-11T19:58:14.354378747Z",
+              "createdat": "2026-09-12T01:40:19.576836009Z",
+              "modifiedat": "2026-09-12T01:40:19.576836009Z",
               "ancestorid": "1",
               "weburl": "https://hub.docker.com"
             }
