@@ -2,7 +2,7 @@
 // Source: common/shared_entity  |  Regenerate: make .sharedfiles
 // Generator: cmds/genspecattrs/main.go
 //
-var XREG_UI_COMMIT = "0b10d1a4f284f3eb946c3de53b91f3dc7a1519c5";
+var XREG_UI_COMMIT = "364cde6e636e86a412945003d602c2ff5fb42f64";
 
 // Spec-defined attributes per entity level.
 // Extensions: attrs NOT in this set, NOT <singular>id, NOT collection keys.
@@ -63,7 +63,7 @@ var LABEL_ATTRS = {
 var SPEC_ATTRS_ORDER = {
   registry: ["specversion", "id", "self", "shortself", "xid", "epoch", "name", "description", "documentation", "icon", "labels", "createdat", "modifiedat", "capabilities", "model", "modelsource"],
   group:    ["id", "self", "shortself", "xid", "epoch", "name", "description", "documentation", "icon", "labels", "createdat", "modifiedat", "deprecated", "constraints"],
-  resource: ["id", "self", "shortself", "xid", "metaurl", "meta"],
+  resource: ["id", "self", "shortself", "xid", "meta", "metaurl"],
   meta:     ["id", "self", "shortself", "xid", "xref", "epoch", "labels", "createdat", "modifiedat", "readonly", "compatibility", "deprecated", "defaultversionid", "defaultversionurl", "defaultversionsticky"],
   version:  ["id", "versionid", "self", "shortself", "xid", "epoch", "name", "isdefault", "description", "documentation", "icon", "labels", "createdat", "modifiedat", "ancestorid", "contenttype", "format", "formatvalidated", "formatvalidatedreason", "compatibilityvalidated", "compatibilityvalidatedreason"]
 };
@@ -87,7 +87,7 @@ var SPEC_ATTRS_ORDER = {
 var SPEC_ATTRS_CANONICAL_ORDER = {
   registry: ["specversion", "registryid", "self", "shortself", "xid", "epoch", "name", "description", "documentation", "icon", "labels", "createdat", "modifiedat", "$extensions", "capabilities", "model", "modelsource", "$space", "$COLLECTIONS"],
   group:    ["id", "self", "shortself", "xid", "epoch", "name", "description", "documentation", "icon", "labels", "createdat", "modifiedat", "deprecated", "constraints", "$extensions", "$space", "$COLLECTIONS"],
-  resource: ["id", "versionid", "self", "shortself", "xid", "epoch", "name", "isdefault", "description", "documentation", "icon", "labels", "createdat", "modifiedat", "ancestorid", "contenttype", "format", "formatvalidated", "formatvalidatedreason", "compatibilityvalidated", "compatibilityvalidatedreason", "$extensions", "$space", "$RESOURCEurl", "$RESOURCEproxyurl", "$RESOURCE", "$RESOURCEbase64", "$space", "metaurl", "meta", "$space", "$COLLECTIONS"],
+  resource: ["id", "versionid", "self", "shortself", "xid", "epoch", "name", "isdefault", "description", "documentation", "icon", "labels", "createdat", "modifiedat", "ancestorid", "contenttype", "format", "formatvalidated", "formatvalidatedreason", "compatibilityvalidated", "compatibilityvalidatedreason", "$extensions", "$space", "$RESOURCEurl", "$RESOURCEproxyurl", "$RESOURCE", "$RESOURCEbase64", "$space", "meta", "metaurl", "$space", "$COLLECTIONS"],
   meta:     ["id", "self", "shortself", "xid", "xref", "epoch", "labels", "createdat", "modifiedat", "readonly", "compatibility", "deprecated", "$extensions", "$space", "defaultversionid", "defaultversionurl", "defaultversionsticky"],
   version:  ["id", "versionid", "self", "shortself", "xid", "epoch", "name", "isdefault", "description", "documentation", "icon", "labels", "createdat", "modifiedat", "ancestorid", "contenttype", "format", "formatvalidated", "formatvalidatedreason", "compatibilityvalidated", "compatibilityvalidatedreason", "$extensions", "$space", "$RESOURCEurl", "$RESOURCEproxyurl", "$RESOURCE", "$RESOURCEbase64"]
 };
