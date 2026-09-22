@@ -2,7 +2,7 @@
 // Source: common/shared_entity  |  Regenerate: make .sharedfiles
 // Generator: cmds/genspecattrs/main.go
 //
-var XREG_UI_COMMIT = "cdca054499ee7932eb121e0fddabc0df6d6c1b71";
+var XREG_UI_COMMIT = "ab77a3e4a9935e45fcec0fc5966083ec0d3fbcc5";
 
 // Spec-defined attributes per entity level.
 // Extensions: attrs NOT in this set, NOT <singular>id, NOT collection keys.
