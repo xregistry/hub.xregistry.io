@@ -1,7 +1,7 @@
 {
   "specversion": "1.0-rc4",
-  "createdat": "2026-09-25T19:41:43.790035164Z",
-  "modifiedat": "2026-09-25T19:41:44.777679597Z",
+  "createdat": "2026-09-26T22:26:07.253705599Z",
+  "modifiedat": "2026-09-26T22:26:08.236265657Z",
   "capabilities": {
     "available": {
       ".xregistry": {
@@ -84,6 +84,8 @@
       "filter",
       "ignore",
       "inline",
+      "limit",
+      "offset",
       "setdefaultversionid",
       "sort",
       "specversion"
@@ -105,7 +107,7 @@
       "modelsource",
       "readonly"
     ],
-    "pagination": false,
+    "pagination": true,
     "shortself": false,
     "specversions": [
       "1.0-rc4"
@@ -145,8 +147,8 @@
       "self": "#/categories/ai",
       "xid": "/categories/ai",
       "epoch": 1,
-      "createdat": "2026-09-25T19:41:44.699831272Z",
-      "modifiedat": "2026-09-25T19:41:44.699831272Z",
+      "createdat": "2026-09-26T22:26:08.160686248Z",
+      "modifiedat": "2026-09-26T22:26:08.160686248Z",
 
       "registries": {},
       "registriesurl": "#/categories/ai/registries",
@@ -157,8 +159,8 @@
       "self": "#/categories/dev",
       "xid": "/categories/dev",
       "epoch": 2,
-      "createdat": "2026-09-25T19:41:44.716390168Z",
-      "modifiedat": "2026-09-25T19:41:44.749959735Z",
+      "createdat": "2026-09-26T22:26:08.176181043Z",
+      "modifiedat": "2026-09-26T22:26:08.20895141Z",
 
       "registries": {
         "xreg-bridge": {
@@ -171,8 +173,8 @@
             "self": "#/categories/dev/registries/xreg-bridge/meta",
             "xid": "/categories/dev/registries/xreg-bridge/meta",
             "epoch": 1,
-            "createdat": "2026-09-25T19:41:44.749959735Z",
-            "modifiedat": "2026-09-25T19:41:44.749959735Z",
+            "createdat": "2026-09-26T22:26:08.20895141Z",
+            "modifiedat": "2026-09-26T22:26:08.20895141Z",
             "readonly": false,
 
             "defaultversionid": "1",
@@ -189,8 +191,8 @@
               "xid": "/categories/dev/registries/xreg-bridge/versions/1",
               "epoch": 1,
               "isdefault": true,
-              "createdat": "2026-09-25T19:41:44.749959735Z",
-              "modifiedat": "2026-09-25T19:41:44.749959735Z",
+              "createdat": "2026-09-26T22:26:08.20895141Z",
+              "modifiedat": "2026-09-26T22:26:08.20895141Z",
               "ancestorid": "1",
               "xregurl": "https://xregistry-pkg-registries-prod.redbeach-4fd4df68.westeurope.azurecontainerapps.io/registry"
             }
@@ -207,8 +209,8 @@
       "self": "#/categories/mcp",
       "xid": "/categories/mcp",
       "epoch": 1,
-      "createdat": "2026-09-25T19:41:44.732743543Z",
-      "modifiedat": "2026-09-25T19:41:44.732743543Z",
+      "createdat": "2026-09-26T22:26:08.191735439Z",
+      "modifiedat": "2026-09-26T22:26:08.191735439Z",
 
       "registries": {},
       "registriesurl": "#/categories/mcp/registries",
@@ -219,8 +221,8 @@
       "self": "#/categories/oci",
       "xid": "/categories/oci",
       "epoch": 1,
-      "createdat": "2026-09-25T19:41:44.777679597Z",
-      "modifiedat": "2026-09-25T19:41:44.777679597Z",
+      "createdat": "2026-09-26T22:26:08.236265657Z",
+      "modifiedat": "2026-09-26T22:26:08.236265657Z",
 
       "registries": {
         "dockerhub": {
@@ -233,8 +235,8 @@
             "self": "#/categories/oci/registries/dockerhub/meta",
             "xid": "/categories/oci/registries/dockerhub/meta",
             "epoch": 1,
-            "createdat": "2026-09-25T19:41:44.777679597Z",
-            "modifiedat": "2026-09-25T19:41:44.777679597Z",
+            "createdat": "2026-09-26T22:26:08.236265657Z",
+            "modifiedat": "2026-09-26T22:26:08.236265657Z",
             "readonly": false,
 
             "defaultversionid": "1",
@@ -251,8 +253,8 @@
               "xid": "/categories/oci/registries/dockerhub/versions/1",
               "epoch": 1,
               "isdefault": true,
-              "createdat": "2026-09-25T19:41:44.777679597Z",
-              "modifiedat": "2026-09-25T19:41:44.777679597Z",
+              "createdat": "2026-09-26T22:26:08.236265657Z",
+              "modifiedat": "2026-09-26T22:26:08.236265657Z",
               "ancestorid": "1",
               "weburl": "https://hub.docker.com"
             }

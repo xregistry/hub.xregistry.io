@@ -88,6 +88,8 @@
       "filter",
       "ignore",
       "inline",
+      "limit",
+      "offset",
       "setdefaultversionid",
       "sort",
       "specversion"
@@ -109,7 +111,7 @@
       "modelsource",
       "readonly"
     ],
-    "pagination": false,
+    "pagination": true,
     "shortself": false,
     "specversions": [
       "1.0-rc4"
