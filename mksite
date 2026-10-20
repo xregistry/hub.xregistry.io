@@ -24,7 +24,7 @@ git clone --depth 1 https://github.com/xregistry/server.git tmp-server
 # Generate specattrsjs, that's needed by the UI
 cd tmp-server
 git rev-list -1 HEAD
-make .sharedfiles registry/ui/specattrs.js
+make .sharedfiles registry/http/ui/specattrs.js
 cd ..
 
 # Erase old site
@@ -32,7 +32,7 @@ rm -rf site
 mkdir -p site/xreg
 
 # Copy new UI files from 'server' repo and overlay our config
-cp tmp-server/registry/ui/*.* site/
+cp tmp-server/registry/http/ui/*.* site/
 cp overlay-site/* site/
 mv site/xregistry site/xreg/.xregistry
 
