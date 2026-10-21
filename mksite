@@ -9,6 +9,7 @@ function clean() {
     set +e
     rm -rf tmp-server
     rm -rf $TMP/tmp-xr
+    rm -f ui.tar
     docker rm -f xrserver
 }
 
@@ -17,22 +18,15 @@ trap clean EXIT
 # Build the Hub (user-friendly) web part first
 ##############################################
 
-# Clone the xRegistry server repo since it has the UI files
-rm -rf tmp-server
-git clone --depth 1 https://github.com/xregistry/server.git tmp-server
-
-# Generate specattrsjs, that's needed by the UI
-cd tmp-server
-git rev-list -1 HEAD
-make .sharedfiles registry/http/ui/specattrs.js
-cd ..
+# Download the ui files
+wget https://github.com/xregistry/server/releases/download/dev/ui.tar
 
 # Erase old site
 rm -rf site
 mkdir -p site/xreg
 
 # Copy new UI files from 'server' repo and overlay our config
-cp tmp-server/registry/http/ui/*.* site/
+tar -xf ui.tar -C site/
 cp overlay-site/* site/
 mv site/xregistry site/xreg/.xregistry
 
