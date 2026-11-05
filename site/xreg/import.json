@@ -1,7 +1,7 @@
 {
   "specversion": "1.0-rc4",
-  "createdat": "2026-11-04T19:37:28.096639907Z",
-  "modifiedat": "2026-11-04T19:37:29.105072569Z",
+  "createdat": "2026-11-05T16:18:55.453783297Z",
+  "modifiedat": "2026-11-05T16:18:57.455548782Z",
   "capabilities": {
     "available": {
       ".xregistry": {
@@ -107,6 +107,7 @@
       "modelsource",
       "readonly"
     ],
+    "maxversionslimit": 0,
     "pagination": true,
     "shortself": false,
     "specversions": [
@@ -147,8 +148,8 @@
       "self": "#/categories/ai",
       "xid": "/categories/ai",
       "epoch": 1,
-      "createdat": "2026-11-04T19:37:29.02598878Z",
-      "modifiedat": "2026-11-04T19:37:29.02598878Z",
+      "createdat": "2026-11-05T16:18:57.401352026Z",
+      "modifiedat": "2026-11-05T16:18:57.401352026Z",
 
       "registries": {},
       "registriesurl": "#/categories/ai/registries",
@@ -159,8 +160,8 @@
       "self": "#/categories/dev",
       "xid": "/categories/dev",
       "epoch": 2,
-      "createdat": "2026-11-04T19:37:29.044457633Z",
-      "modifiedat": "2026-11-04T19:37:29.079043464Z",
+      "createdat": "2026-11-05T16:18:57.413278077Z",
+      "modifiedat": "2026-11-05T16:18:57.437126193Z",
 
       "registries": {
         "xreg-bridge": {
@@ -173,8 +174,8 @@
             "self": "#/categories/dev/registries/xreg-bridge/meta",
             "xid": "/categories/dev/registries/xreg-bridge/meta",
             "epoch": 1,
-            "createdat": "2026-11-04T19:37:29.079043464Z",
-            "modifiedat": "2026-11-04T19:37:29.079043464Z",
+            "createdat": "2026-11-05T16:18:57.437126193Z",
+            "modifiedat": "2026-11-05T16:18:57.437126193Z",
             "readonly": false,
 
             "defaultversionid": "1",
@@ -191,8 +192,8 @@
               "xid": "/categories/dev/registries/xreg-bridge/versions/1",
               "epoch": 1,
               "isdefault": true,
-              "createdat": "2026-11-04T19:37:29.079043464Z",
-              "modifiedat": "2026-11-04T19:37:29.079043464Z",
+              "createdat": "2026-11-05T16:18:57.437126193Z",
+              "modifiedat": "2026-11-05T16:18:57.437126193Z",
               "ancestorid": "1",
               "xregurl": "https://xregistry-pkg-registries-prod.redbeach-4fd4df68.westeurope.azurecontainerapps.io/registry"
             }
@@ -209,8 +210,8 @@
       "self": "#/categories/mcp",
       "xid": "/categories/mcp",
       "epoch": 1,
-      "createdat": "2026-11-04T19:37:29.061566612Z",
-      "modifiedat": "2026-11-04T19:37:29.061566612Z",
+      "createdat": "2026-11-05T16:18:57.425053829Z",
+      "modifiedat": "2026-11-05T16:18:57.425053829Z",
 
       "registries": {},
       "registriesurl": "#/categories/mcp/registries",
@@ -221,8 +222,8 @@
       "self": "#/categories/oci",
       "xid": "/categories/oci",
       "epoch": 1,
-      "createdat": "2026-11-04T19:37:29.105072569Z",
-      "modifiedat": "2026-11-04T19:37:29.105072569Z",
+      "createdat": "2026-11-05T16:18:57.455548782Z",
+      "modifiedat": "2026-11-05T16:18:57.455548782Z",
 
       "registries": {
         "dockerhub": {
@@ -235,8 +236,8 @@
             "self": "#/categories/oci/registries/dockerhub/meta",
             "xid": "/categories/oci/registries/dockerhub/meta",
             "epoch": 1,
-            "createdat": "2026-11-04T19:37:29.105072569Z",
-            "modifiedat": "2026-11-04T19:37:29.105072569Z",
+            "createdat": "2026-11-05T16:18:57.455548782Z",
+            "modifiedat": "2026-11-05T16:18:57.455548782Z",
             "readonly": false,
 
             "defaultversionid": "1",
@@ -253,8 +254,8 @@
               "xid": "/categories/oci/registries/dockerhub/versions/1",
               "epoch": 1,
               "isdefault": true,
-              "createdat": "2026-11-04T19:37:29.105072569Z",
-              "modifiedat": "2026-11-04T19:37:29.105072569Z",
+              "createdat": "2026-11-05T16:18:57.455548782Z",
+              "modifiedat": "2026-11-05T16:18:57.455548782Z",
               "ancestorid": "1",
               "weburl": "https://hub.docker.com"
             }
